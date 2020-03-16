@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+
+# VSCode
+.vscode/
+
+# Scrapy
+.scrapy/
+crawls/
+
+# Configuration
+db_config.json
+
+# Misc
+notes.txt
+log.txt
