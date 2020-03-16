@@ -23,7 +23,7 @@ class RouteMiddleware:
     def process_route(self, item):
         """Build SQLQuerys to insert route data into the database and returns a list of those queries"""
         fields = ["route_id", "parent_id", "name",
-                  "rating", "types", "pitches", "height", "link"]
+                  "rating", "types", "pitches", "height", "link", "length"]
         data = {field: val for field, val in item.items() if field in fields}
 
         return [

@@ -34,8 +34,6 @@ class SqlPipeline(object):
 
         if sql is not None:
             self.cursor.execute(sql)
-        else:
-            logging.info(type(item))
 
         return item
 

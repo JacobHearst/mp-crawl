@@ -28,7 +28,7 @@ class Route(scrapy.Item):
     rating = scrapy.Field()
     link = scrapy.Field()
     grades = scrapy.Field()
-    grade = scrapy.Field()
+    length = scrapy.Field()
     pitches = scrapy.Field()
     height = scrapy.Field()
 

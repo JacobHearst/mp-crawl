@@ -59,8 +59,8 @@ class MpSpider(CrawlSpider):
         route["rating"] = response.css("#route-star-avg span a span::text").re_first(r"Avg: (\d(\.\d)?)")
 
         details_table = response.css("table.description-details td::text")
-        route["types"] = ", ".join(details_table.re(r"(Trad|Ice|Snow|Alpine|Aid|Boulder)"))
-        route["grade"] = details_table.re_first(r"Grade [IVX]+")
+        route["types"] = ", ".join(details_table.re(r"(TR|Trad|Ice|Snow|Alpine|Aid|Boulder)"))
+        route["length"] = details_table.re_first(r"Grade [IVX]+")
         route["pitches"] = details_table.re_first(r"(\d+) pitches")
         route["height"] = details_table.re_first(r"(\d+) ft")
 
