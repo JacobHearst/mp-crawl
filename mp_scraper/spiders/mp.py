@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+import calendar
 import json
 import logging
-from mp_scraper.items import Area, Route, RouteGrade, ClimbSeasonValue, MonthlyAverage
+from mp_scraper.items import Area, Route, RouteGrade, ClimbSeasonValue, MonthlyTempAvgs, MonthlyPrecipAvgs, MpItemLoader, RouteGrades
 import re
 import scrapy
 from scrapy.linkextractors import LinkExtractor
-from scrapy.loader import ItemLoader
 from scrapy.spiders import CrawlSpider, Rule
 
 
@@ -22,6 +22,8 @@ class MpSpider(CrawlSpider):
             allow=(r"\.com\/route\/\d+/[\w\d-]+$")), callback="parse_route"),
     )
 
+    months = dict((v, k) for k, v in enumerate(calendar.month_name))
+
     def parse_area(self, response):
         """Extract area data from page
         
@@ -31,7 +33,7 @@ class MpSpider(CrawlSpider):
         Returns:
             list[Item] -- List of items extracted from the page
         """
-        area_loader = ItemLoader(item=Area(), response=response)
+        area_loader = MpItemLoader(item=Area(), response=response)
         area_id = self.extract_id(response.url)
 
         area_loader.add_value("link", response.url)
@@ -62,7 +64,7 @@ class MpSpider(CrawlSpider):
         Returns:
             list[Item] -- List of items extracted from the page
         """
-        route_loader = ItemLoader(item=Route(), response=response)
+        route_loader = MpItemLoader(item=Route(), response=response)
         route_id = self.extract_id(response.url)
 
         route_loader.add_value("link", response.url)
@@ -141,14 +143,13 @@ class MpSpider(CrawlSpider):
             list[MonthlyAverage] -- The parsed monthly averages extracted from the array (if any, otherwise returns None)
         """
         monthly_avg_vals = self.extract_monthly_data(response, var_name)
-        table_name = "temp_avg" if var_name == "dataTemps" else "precip_avg"
+        item_type = MonthlyTempAvgs if var_name == "dataTemps" else MonthlyPrecipAvgs
 
         if len(monthly_avg_vals[0]) > 0:
             return [
-                MonthlyAverage(
-                    table_name=table_name,
+                item_type(
                     area_id=area_id,
-                    month=val[0],
+                    month=self.months[val[0]],
                     avg_low=val[1],
                     avg_high=val[2]
                 ) for val in monthly_avg_vals]
@@ -172,7 +173,7 @@ class MpSpider(CrawlSpider):
             return [
                 ClimbSeasonValue(
                     area_id=area_id,
-                    month=val[0],
+                    month=self.months[val[0]],
                     value=val[1]
                 ) for val in climb_season_vals]
         
@@ -181,7 +182,7 @@ class MpSpider(CrawlSpider):
 
 
     def extract_grades(self, response, route_id):
-        """Extract any grade data from the page and return a list of RouteGrade items
+        """Extract grade data from the page and return a list of RouteGrade items
         
         Arguments:
             response {scrapy.http.Response} -- Scrapy response for the route
@@ -190,17 +191,23 @@ class MpSpider(CrawlSpider):
         Returns:
             list[RouteGrade] -- A list of the grades associated with the route
         """
-        grade_info = response.css("div.col-md-9 > h2")
+        grade_info_css = "div.col-md-9 > h2"
 
-        grades = [
-            RouteGrade(route_id=route_id, grade_system="yds", grade=grade_info.re_first(r"(5\.\d+[a-z]?\+?|3rd|4th|Easy 5th)")),
-            RouteGrade(route_id=route_id, grade_system="ice", grade=grade_info.re_first(r"[WA]I\d[-\d]?\+?")),
-            RouteGrade(route_id=route_id, grade_system="danger", grade=grade_info.re_first(r"(R|X|PG13)")),
-            RouteGrade(route_id=route_id, grade_system="aid", grade=grade_info.re_first(r"[CA]\d\+?")),
-            RouteGrade(route_id=route_id, grade_system="m", grade=grade_info.re_first(r"M\d+")),
-            RouteGrade(route_id=route_id, grade_system="v", grade=grade_info.re_first(r"V\d+\+?|V-easy")),
-            RouteGrade(route_id=route_id, grade_system="snow", grade=grade_info.re_first(r"\w+\.? ?Snow"))
-        ]
+        grades_loader = MpItemLoader(item=RouteGrades(), response=response)
+        grades_loader.add_css("yds", grade_info_css, re="(5\.\d+[a-z]?\+?|3rd|4th|Easy 5th)")
+        grades_loader.add_css("ice", grade_info_css, re="[WA]I\d[-\d]?\+?")
+        grades_loader.add_css("danger", grade_info_css, re="(R|X|PG13)")
+        grades_loader.add_css("aid", grade_info_css, re="[CA]\d\+?")
+        grades_loader.add_css("m", grade_info_css, re="M\d+")
+        grades_loader.add_css("v", grade_info_css, re="V\d+\+?|V-easy")
+        grades_loader.add_css("snow", grade_info_css, re="\w+\.? ?Snow")
 
-        # Don't clog up the pipeline with items that are just going to be dropped
-        return [grade for grade in grades if grade["grade"] is not None]
+        grades = grades_loader.load_item()
+
+        # Convert grades to RouteGrade and filter 
+        return [
+            RouteGrade(
+                route_id=route_id,
+                grade=grades[grade],
+                grade_system=grade
+            ) for grade in grades if grades[grade] is not None]

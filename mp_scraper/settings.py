@@ -11,7 +11,7 @@
 
 BOT_NAME = 'mp_scraper'
 
-LOG_LEVEL = 'WARNING'
+LOG_LEVEL = 'INFO'
 # LOG_FILE = 'log.txt'
 
 SPIDER_MODULES = ['mp_scraper.spiders']
