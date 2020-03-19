@@ -23,7 +23,14 @@ class MpSpider(CrawlSpider):
     )
 
     def parse_area(self, response):
-        """Extract area data from page"""
+        """Extract area data from page
+        
+        Arguments:
+            response {scrapy.http.Response} -- Scrapy response for the area
+        
+        Returns:
+            list[Item] -- List of items extracted from the page
+        """
         area_loader = ItemLoader(item=Area(), response=response)
         area_id = self.extract_id(response.url)
 
@@ -47,7 +54,14 @@ class MpSpider(CrawlSpider):
 
 
     def parse_route(self, response):
-        """Extract route data from page"""
+        """Extract route data from page
+        
+        Arguments:
+            response {scrapy.http.Response} -- Scrapy response for the route
+        
+        Returns:
+            list[Item] -- List of items extracted from the page
+        """
         route_loader = ItemLoader(item=Route(), response=response)
         route_id = self.extract_id(response.url)
 
@@ -69,7 +83,14 @@ class MpSpider(CrawlSpider):
         ]        
 
     def extract_id(self, link):
-        """Extract the Mountain Project id for a resource from its link and return the int id"""
+        """Extract the Mountain Project id for a resource from its link
+        
+        Arguments:
+            link {str} -- Link to extract the ID From
+        
+        Returns:
+            int -- The Mountain Project ID in the given link
+        """
         matches = re.search(r"\.com/(?:area|route)/(\d+)", link)
 
         # Top level areas won't have a parent
@@ -79,7 +100,14 @@ class MpSpider(CrawlSpider):
         return None
 
     def extract_parent_id(self, response):
-        """Find the parent area and return its id from the url and return the int id"""
+        """Find the parent area and return its id from the url
+        
+        Arguments:
+            response {scrapy.http.Response} -- Scrapy response for the resource
+        
+        Returns:
+            int -- The Mountain Project ID in the given link
+        """
         # Get the furthest right element in the breadcrumbs to extract parent id
         parent_link = response.css(
             "div.mb-half.small.text-warm a::attr(href)").extract()[-1]
@@ -87,13 +115,31 @@ class MpSpider(CrawlSpider):
         return self.extract_id(parent_link)
 
     def extract_monthly_data(self, response, var_name):
-        """Extract the JavaScript arrays containing the monthly average data and return a list"""
+        """Extract the JavaScript arrays containing monthly data
+        
+        Arguments:
+            response {scrapy.http.Response} -- Scrapy response for the area
+            var_name {str} -- Name of the variable to extract
+        
+        Returns:
+            list -- The 2D list of monthly data
+        """
         regex = re.compile(var_name + r" = (\[.+\]);")
         rawAvgs = response.css("script::text").re_first(regex)
 
         return json.loads(rawAvgs)
 
     def extract_monthly_avg(self, area_id, response, var_name):
+        """Extract a javascript array containing monthly averages for an area
+        
+        Arguments:
+            area_id {int} -- ID of the area that the average belongs to
+            response {scrapy.http.Response} -- Scrapy response for the area
+            var_name {str} -- Name of the variable to extract
+        
+        Returns:
+            list[MonthlyAverage] -- The parsed monthly averages extracted from the array (if any, otherwise returns None)
+        """
         monthly_avg_vals = self.extract_monthly_data(response, var_name)
         table_name = "temp_avg" if var_name == "dataTemps" else "precip_avg"
 
@@ -111,6 +157,15 @@ class MpSpider(CrawlSpider):
         return None
 
     def extract_climb_season(self, area_id, response):
+        """Extract the climbing season data for an area
+        
+        Arguments:
+            area_id {int} -- ID of the area that the data belongs to
+            response {scrapy.http.Response} -- Scrapy response for the area
+        
+        Returns:
+            list[ClimbSeasonValue] -- The parsed monthly averages extracted from the array (if any, otherwise returns None)
+        """
         climb_season_vals = self.extract_monthly_data(response, "dataClimbSeason")
 
         if len(climb_season_vals[0]) > 0:
@@ -126,7 +181,15 @@ class MpSpider(CrawlSpider):
 
 
     def extract_grades(self, response, route_id):
-        """Extract any grade data from the page and return a list of RouteGrade items"""
+        """Extract any grade data from the page and return a list of RouteGrade items
+        
+        Arguments:
+            response {scrapy.http.Response} -- Scrapy response for the route
+            route_id {int} -- Route ID that the grade(s) belong to
+        
+        Returns:
+            list[RouteGrade] -- A list of the grades associated with the route
+        """
         grade_info = response.css("div.col-md-9 > h2")
 
         grades = [
