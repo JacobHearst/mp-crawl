@@ -5,7 +5,6 @@ from scrapy.loader import ItemLoader
 
 to_int = Compose(TakeFirst(), int)
 to_float = Compose(TakeFirst(), float)
-escape_quotes = Compose(TakeFirst(), lambda val: val.replace("\"", "\\\""))
 
 
 class MpItemLoader(ItemLoader):
@@ -14,7 +13,7 @@ class MpItemLoader(ItemLoader):
 class Area(scrapy.Item):
     area_id = scrapy.Field(input_processor=to_int)
     parent_id = scrapy.Field(input_processor=to_int)
-    name = scrapy.Field(input_processor=escape_quotes)
+    name = scrapy.Field()
     latitude = scrapy.Field(input_processor=to_float)
     longitude = scrapy.Field(input_processor=to_float)
     elevation = scrapy.Field(input_processor=Join(""), output_processor=to_int)
@@ -24,7 +23,7 @@ class Area(scrapy.Item):
 class Route(scrapy.Item):
     route_id = scrapy.Field(input_processor=to_int)
     parent_id = scrapy.Field(input_processor=to_int)
-    name = scrapy.Field(input_processor=escape_quotes)
+    name = scrapy.Field()
     types = scrapy.Field(input_processor=Join(", "))
     rating = scrapy.Field(input_processor=to_float)
     link = scrapy.Field()

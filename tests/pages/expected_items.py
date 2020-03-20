@@ -71,7 +71,7 @@ expected_items = {
             MonthlyPrecipAvg(area_id=108543607, month=12, avg_low=12.9, avg_high=17)
         ],
         "ooh-la-la": [
-            Area(area_id=105746817, parent_id=105802014, name="\\\"Ooh La La!\\\"",
+            Area(area_id=105746817, parent_id=105802014, name="\"Ooh La La!\"",
                  link="https://www.mountainproject.com/area/105746817/ooh-la-la", latitude=40.162, longitude=-105.668, elevation=12945),
             ClimbSeasonValue(area_id=105746817, month=1, value=2),
             ClimbSeasonValue(area_id=105746817, month=2, value=3),

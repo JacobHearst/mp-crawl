@@ -113,6 +113,7 @@ class SqlPipeline(object):
         encoded_val = "NULL" if is_empty or value is None else value
 
         if isinstance(encoded_val, str) and encoded_val is not "NULL":
+            encode_val = encoded_val.replace("\"", "\\\"")
             encoded_val = "\"%s\"" % encoded_val
 
         return str(encoded_val)
