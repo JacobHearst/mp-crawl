@@ -32,7 +32,7 @@ class TestSqlPipeline(unittest.TestCase):
             ("", "NULL"),
             ("String", "\"String\""),
             ("Good 'Ol single quotes", "\"Good 'Ol single quotes\""),
-            ("\"Quotes\" - Quotes on quotes", "\"\\\"Quotes\\\" - Quotes on quotes\""),
+            ("\"Quotes\" - Quotes on quotes", "\"\"Quotes\" - Quotes on quotes\""),
             (0, "0"),
             (True, "True")
         ]
