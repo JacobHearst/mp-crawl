@@ -6,10 +6,8 @@ from mp_scraper.items import MonthlyTempAvgs, MonthlyPrecipAvgs, ClimbSeasonValu
 
 
 class TestMpSpider(unittest.TestCase):
-    def setUp(self):
-        self.spider = MpSpider()
-
     def test_extract_id(self):
+        spider = MpSpider()
         cases = [
             (".com/route/105717310/stolen-chimney", "105717310"),
             (".com/area/105716859/ancient-art", "105716859"),
@@ -23,6 +21,7 @@ class TestMpSpider(unittest.TestCase):
                 self.assertEqual(result, case[1])
 
     def test_extract_monthly_avg(self):
+        spider = MpSpider()
         def run_case(var_name, item_type):
             area_id = 12345
             data = [
@@ -58,7 +57,7 @@ class TestMpSpider(unittest.TestCase):
             ]
 
             result = self.spider.extract_monthly_avg(area_id, None, var_name)
-            
+
             self.assertEqual(len(expected), len(result))
             for index, item in enumerate(result):
                 self.assertIsInstance(item, item_type)
@@ -68,7 +67,8 @@ class TestMpSpider(unittest.TestCase):
         run_case("dataPrecip", MonthlyPrecipAvgs)
 
     def test_extract_climb_season(self):
-        area_id=67890
+        spider = MpSpider()
+        area_id = 67890
         data = [
             ["October", 19, 20],
             ["March", 5, 6],
@@ -105,13 +105,14 @@ class TestMpSpider(unittest.TestCase):
 
         self.assertEqual(len(expected), len(result))
         for index, item in enumerate(result):
-                self.assertIsInstance(item, ClimbSeasonValue)
-                self.assertDictEqual(dict(expected[index]), dict(item))
+            self.assertIsInstance(item, ClimbSeasonValue)
+            self.assertDictEqual(dict(expected[index]), dict(item))
 
     def test_empty_monthly_vals(self):
+        spider = MpSpider()
         area_id = 12345
         self.spider.extract_monthly_data = MagicMock(return_value=[[]])
-        
+
         temps = self.spider.extract_monthly_avg(area_id, None, "dataTemps")
         precip = self.spider.extract_monthly_avg(area_id, None, "dataPrecip")
         climb_season = self.spider.extract_climb_season(area_id, None)
@@ -119,7 +120,6 @@ class TestMpSpider(unittest.TestCase):
         self.assertEqual(None, temps)
         self.assertEqual(None, precip)
         self.assertEqual(None, climb_season)
-
 
 
 if __name__ == "__main__":
