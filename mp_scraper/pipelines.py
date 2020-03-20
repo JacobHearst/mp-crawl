@@ -78,7 +78,6 @@ class SqlPipeline(object):
         else:
             logging.debug("Processing %s" % item_class_name)
 
-
             try:
                 self.insert_item(item_metadata["table_name"], item)            
             except Exception as e:

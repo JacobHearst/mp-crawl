@@ -8,6 +8,7 @@ from mp_scraper.items import MonthlyTempAvgs, MonthlyPrecipAvgs, ClimbSeasonValu
 class TestMpSpider(unittest.TestCase):
     def setUp(self):
         self.spider = MpSpider()
+
     def test_extract_id(self):
         cases = [
             (".com/route/105717310/stolen-chimney", "105717310"),
@@ -22,7 +23,6 @@ class TestMpSpider(unittest.TestCase):
                 self.assertEqual(result, case[1])
 
     def test_extract_monthly_avg(self):
-        self.maxDiff = 2147
         def run_case(var_name, item_type):
             area_id = 12345
             data = [
