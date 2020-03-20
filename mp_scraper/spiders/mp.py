@@ -2,7 +2,7 @@
 import calendar
 import json
 import logging
-from mp_scraper.items import Area, Route, RouteGrade, ClimbSeasonValue, MonthlyTempAvgs, MonthlyPrecipAvgs, MpItemLoader, RouteGrades
+from mp_scraper.items import Area, Route, RouteGrade, ClimbSeasonValue, MonthlyTempAvg, MonthlyPrecipAvg, MpItemLoader, RouteGrades
 import re
 import scrapy
 from scrapy.linkextractors import LinkExtractor
@@ -18,8 +18,8 @@ class MpSpider(CrawlSpider):
     rules = (
         Rule(LinkExtractor(
             allow=(r"\.com\/area\/\d+/[\w\d-]+$")), callback="parse_area", follow=True),
-        Rule(LinkExtractor(
-            allow=(r"\.com\/route\/\d+/[\w\d-]+$")), callback="parse_route"),
+        # Rule(LinkExtractor(
+        #     allow=(r"\.com\/route\/\d+/[\w\d-]+$")), callback="parse_route"),
     )
 
     months = dict((v, k) for k, v in enumerate(calendar.month_name))
@@ -66,12 +66,10 @@ class MpSpider(CrawlSpider):
         """
         route_loader = MpItemLoader(item=Route(), response=response)
         route_id = self.extract_id(response.url)
-        parent_link = response.css(
-            "div.mb-half.small.text-warm a::attr(href)").extract()[-1]
 
         route_loader.add_value("link", response.url)
         route_loader.add_value("route_id", route_id)
-        route_loader.add_value("parent_id", self.extract_id(parent_link))
+        route_loader.add_value("parent_id", self.extract_parent_id(response))
         route_loader.add_css("name", "title::text", re="(?<=Climb )(.+?)(?:,|$)")
         route_loader.add_css("rating", "#route-star-avg span a span::text", re="Avg: (\d(\.\d)?)")
 
@@ -103,6 +101,12 @@ class MpSpider(CrawlSpider):
 
         return None
 
+    def extract_parent_id(self, response):
+        parent_link = response.css(
+            "div.mb-half.small.text-warm a::attr(href)").extract()[-1]
+
+        return self.extract_id(parent_link)
+
     def extract_monthly_data(self, response, var_name):
         """Extract the JavaScript arrays containing monthly data
         
@@ -127,22 +131,24 @@ class MpSpider(CrawlSpider):
             var_name {str} -- Name of the variable to extract
         
         Returns:
-            list[MonthlyAverage] -- The parsed monthly averages extracted from the array (if any, otherwise returns None)
+            list -- The parsed monthly averages extracted from the array (if any, otherwise returns None)
         """
         monthly_avg_vals = self.extract_monthly_data(response, var_name)
-        item_type = MonthlyTempAvgs if var_name == "dataTemps" else MonthlyPrecipAvgs
+        item_type = MonthlyTempAvg if var_name == "dataTemps" else MonthlyPrecipAvg
+        low_index = 2 if var_name == "dataTemps" else 1
+        high_index = 1 if var_name == "dataTemps" else 2
 
-        if len(monthly_avg_vals[0]) > 0:
+        if len(monthly_avg_vals) > 0:
             return [
                 item_type(
                     area_id=area_id,
                     month=self.months[val[0]],
-                    avg_low=val[1],
-                    avg_high=val[2]
-                ) for val in monthly_avg_vals]
+                    avg_low=val[low_index],
+                    avg_high=val[high_index]
+                ) for val in monthly_avg_vals if len(val) > 0]
         
         # No temp/precip data for the given area
-        return None
+        return []
 
     def extract_climb_season(self, area_id, response):
         """Extract the climbing season data for an area
@@ -156,16 +162,16 @@ class MpSpider(CrawlSpider):
         """
         climb_season_vals = self.extract_monthly_data(response, "dataClimbSeason")
 
-        if len(climb_season_vals[0]) > 0:
+        if len(climb_season_vals) > 0:
             return [
                 ClimbSeasonValue(
                     area_id=area_id,
                     month=self.months[val[0]],
                     value=val[1]
-                ) for val in climb_season_vals]
+                ) for val in climb_season_vals if len(val) > 0]
         
         # No climb season data for the given area
-        return None
+        return []
 
 
     def extract_grades(self, response, route_id):
@@ -181,12 +187,12 @@ class MpSpider(CrawlSpider):
         grade_info_css = "div.col-md-9 > h2"
 
         grades_loader = MpItemLoader(item=RouteGrades(), response=response)
-        grades_loader.add_css("yds", grade_info_css, re="(5\.\d+[a-z]?\+?|3rd|4th|Easy 5th)")
-        grades_loader.add_css("ice", grade_info_css, re="[WA]I\d[-\d]?\+?")
+        grades_loader.add_css("yds", grade_info_css, re="(5\.[\d\w\+\-\?/]{1,5}|3rd|4th|Easy 5th)")
+        grades_loader.add_css("ice", grade_info_css, re="[WA]I\d(?:-\d)?[\+-]?")
         grades_loader.add_css("danger", grade_info_css, re="(R|X|PG13)")
         grades_loader.add_css("aid", grade_info_css, re="[CA]\d\+?")
         grades_loader.add_css("m", grade_info_css, re="M\d+")
-        grades_loader.add_css("v", grade_info_css, re="V\d+\+?|V-easy")
+        grades_loader.add_css("v", grade_info_css, re="V[Bb\d\+-]+(?:easy)?")
         grades_loader.add_css("snow", grade_info_css, re="\w+\.? ?Snow")
 
         grades = grades_loader.load_item()

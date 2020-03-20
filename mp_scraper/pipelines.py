@@ -17,11 +17,11 @@ class SqlPipeline(object):
             "table_name": "route",
             "required_fields": ["route_id", "parent_id", "name", "link"]
         },
-        "MonthlyTempAvgs": {
+        "MonthlyTempAvg": {
             "table_name": "temp_avg",
             "required_fields": ["area_id", "month", "avg_low", "avg_high"]
         },
-        "MonthlyPrecipAvgs": {
+        "MonthlyPrecipAvg": {
             "table_name": "precip_avg",
             "required_fields": ["area_id", "month", "avg_low", "avg_high"]
         },
