@@ -18,7 +18,7 @@ class SqlPipeline(object):
             "required_fields": ["route_id", "parent_id", "name", "link"]
         },
         "MonthlyTempAvgs": {
-            "table_name": "precip_avg",
+            "table_name": "temp_avg",
             "required_fields": ["area_id", "month", "avg_low", "avg_high"]
         },
         "MonthlyPrecipAvgs": {
@@ -51,7 +51,7 @@ class SqlPipeline(object):
 
     def close_spider(self, spider):
         """Commit data and close database connection"""
-        # self.db.commit()
+        self.db.commit()
         self.db.close()
 
     def process_item(self, item, spider):

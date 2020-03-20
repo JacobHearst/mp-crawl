@@ -12,7 +12,7 @@
 BOT_NAME = 'mp_scraper'
 
 LOG_LEVEL = 'INFO'
-# LOG_FILE = 'log.txt'
+LOG_FILE = 'log.txt'
 
 SPIDER_MODULES = ['mp_scraper.spiders']
 NEWSPIDER_MODULE = 'mp_scraper.spiders'
@@ -86,8 +86,8 @@ ITEM_PIPELINES = {
 
 # Enable and configure HTTP caching (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-HTTPCACHE_ENABLED = True
-HTTPCACHE_EXPIRATION_SECS = 604800 # 1 week
-HTTPCACHE_DIR = 'httpcache'
-HTTPCACHE_IGNORE_HTTP_CODES = []
-HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+# HTTPCACHE_ENABLED = True
+# HTTPCACHE_EXPIRATION_SECS = 604800 # 1 week
+# HTTPCACHE_DIR = 'httpcache'
+# HTTPCACHE_IGNORE_HTTP_CODES = []
+# HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'

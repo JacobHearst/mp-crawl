@@ -5,7 +5,7 @@ from scrapy.loader import ItemLoader
 
 to_int = Compose(TakeFirst(), int)
 to_float = Compose(TakeFirst(), float)
-swap_quotes = Compose(TakeFirst(), lambda val: val.replace("\"", "'"))
+escape_quotes = Compose(TakeFirst(), lambda val: val.replace("\"", "\""))
 
 
 class MpItemLoader(ItemLoader):
@@ -14,7 +14,7 @@ class MpItemLoader(ItemLoader):
 class Area(scrapy.Item):
     area_id = scrapy.Field(output_processor=to_int)
     parent_id = scrapy.Field(output_processor=to_int)
-    name = scrapy.Field(output_processor=swap_quotes)
+    name = scrapy.Field(output_processor=escape_quotes)
     latitude = scrapy.Field(output_processor=to_float)
     longitude = scrapy.Field(output_processor=to_float)
     elevation = scrapy.Field(output_processor=Compose(Join(""), to_int))
@@ -24,7 +24,7 @@ class Area(scrapy.Item):
 class Route(scrapy.Item):
     route_id = scrapy.Field(output_processor=to_int)
     parent_id = scrapy.Field(output_processor=to_int)
-    name = scrapy.Field(output_processor=swap_quotes)
+    name = scrapy.Field(output_processor=escape_quotes)
     types = scrapy.Field(output_processor=Join(", "))
     rating = scrapy.Field(output_processor=to_float)
     link = scrapy.Field()
@@ -56,13 +56,13 @@ class ClimbSeasonValue(scrapy.Item):
 
 
 class RouteGrades(scrapy.Item):
-    yds = scrapy.Field(output_processor=TakeFirst())
-    ice = scrapy.Field(output_processor=TakeFirst())
-    danger = scrapy.Field(output_processor=TakeFirst())
-    aid = scrapy.Field(output_processor=TakeFirst())
-    m = scrapy.Field(output_processor=TakeFirst())
-    v = scrapy.Field(output_processor=TakeFirst())
-    snow = scrapy.Field(output_processor=TakeFirst())
+    yds = scrapy.Field()
+    ice = scrapy.Field()
+    danger = scrapy.Field()
+    aid = scrapy.Field()
+    m = scrapy.Field()
+    v = scrapy.Field()
+    snow = scrapy.Field()
 
 
 class RouteGrade(scrapy.Item):

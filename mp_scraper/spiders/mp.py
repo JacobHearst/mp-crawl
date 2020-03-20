@@ -66,10 +66,12 @@ class MpSpider(CrawlSpider):
         """
         route_loader = MpItemLoader(item=Route(), response=response)
         route_id = self.extract_id(response.url)
+        parent_link = response.css(
+            "div.mb-half.small.text-warm a::attr(href)").extract()[-1]
 
         route_loader.add_value("link", response.url)
         route_loader.add_value("route_id", route_id)
-        route_loader.add_value("parent_id", self.extract_parent_id(response))
+        route_loader.add_value("parent_id", self.extract_id(parent_link))
         route_loader.add_css("name", "title::text", re="(?<=Climb )(.+?)(?:,|$)")
         route_loader.add_css("rating", "#route-star-avg span a span::text", re="Avg: (\d(\.\d)?)")
 
@@ -91,7 +93,7 @@ class MpSpider(CrawlSpider):
             link {str} -- Link to extract the ID From
         
         Returns:
-            int -- The Mountain Project ID in the given link
+            str -- The Mountain Project ID in the given link
         """
         matches = re.search(r"\.com/(?:area|route)/(\d+)", link)
 
@@ -100,21 +102,6 @@ class MpSpider(CrawlSpider):
             return matches.group(1)
 
         return None
-
-    def extract_parent_id(self, response):
-        """Find the parent area and return its id from the url
-        
-        Arguments:
-            response {scrapy.http.Response} -- Scrapy response for the resource
-        
-        Returns:
-            int -- The Mountain Project ID in the given link
-        """
-        # Get the furthest right element in the breadcrumbs to extract parent id
-        parent_link = response.css(
-            "div.mb-half.small.text-warm a::attr(href)").extract()[-1]
-
-        return self.extract_id(parent_link)
 
     def extract_monthly_data(self, response, var_name):
         """Extract the JavaScript arrays containing monthly data
