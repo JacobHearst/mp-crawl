@@ -74,7 +74,7 @@ class MpSpider(CrawlSpider):
         route_loader.add_css("rating", "#route-star-avg span a span::text", re="Avg: (\d(\.\d)?)")
 
         details_css = "table.description-details td::text"
-        route_loader.add_css("types", details_css, re="(TR|Trad|Ice|Snow|Alpine|Aid|Boulder|Sport)")
+        route_loader.add_css("types", details_css, re="(TR|Trad|Ice|Snow|Alpine|Aid|Boulder|Sport|Mixed)")
         route_loader.add_css("length", details_css, re="Grade ([IVX]+)")
         route_loader.add_css("pitches", details_css, re="(\d+) pitches")
         route_loader.add_css("height", details_css, re="(\d+) ft")
@@ -91,13 +91,13 @@ class MpSpider(CrawlSpider):
             link {str} -- Link to extract the ID From
         
         Returns:
-            str -- The Mountain Project ID in the given link
+            int -- The Mountain Project ID in the given link
         """
         matches = re.search(r"\.com/(?:area|route)/(\d+)", link)
 
         # Top level areas won't have a parent
         if matches is not None:
-            return matches.group(1)
+            return int(matches.group(1))
 
         return None
 
@@ -189,10 +189,10 @@ class MpSpider(CrawlSpider):
         grades_loader = MpItemLoader(item=RouteGrades(), response=response)
         grades_loader.add_css("yds", grade_info_css, re="(5\.[\d\w\+\-\?/]{1,5}|3rd|4th|Easy 5th)")
         grades_loader.add_css("ice", grade_info_css, re="[WA]I\d(?:-\d)?[\+-]?")
-        grades_loader.add_css("danger", grade_info_css, re="(R|X|PG13)")
+        grades_loader.add_css("danger", grade_info_css, re=" (R|X|PG13)")
         grades_loader.add_css("aid", grade_info_css, re="[CA]\d\+?")
-        grades_loader.add_css("m", grade_info_css, re="M\d+")
-        grades_loader.add_css("v", grade_info_css, re="V[Bb\d\+-]+(?:easy)?")
+        grades_loader.add_css("m", grade_info_css, re="M[\d-]+")
+        grades_loader.add_css("v", grade_info_css, re="V\d+[\+-]?\d*(?:easy)?")
         grades_loader.add_css("snow", grade_info_css, re="\w+\.? ?Snow")
 
         grades = grades_loader.load_item()

@@ -11,8 +11,8 @@ class TestMpSpider(unittest.TestCase):
     def test_extract_id(self):
         spider = MpSpider()
         cases = [
-            (".com/route/105717310/stolen-chimney", "105717310"),
-            (".com/area/105716859/ancient-art", "105716859"),
+            (".com/route/105717310/stolen-chimney", 105717310),
+            (".com/area/105716859/ancient-art", 105716859),
             (".com", None),
             (".com/directory/105716859/route-or-area", None)
         ]

@@ -10,9 +10,10 @@ to_float = Compose(TakeFirst(), float)
 class MpItemLoader(ItemLoader):
     default_output_processor = TakeFirst()
 
+
 class Area(scrapy.Item):
-    area_id = scrapy.Field(input_processor=to_int)
-    parent_id = scrapy.Field(input_processor=to_int)
+    area_id = scrapy.Field()
+    parent_id = scrapy.Field()
     name = scrapy.Field()
     latitude = scrapy.Field(input_processor=to_float)
     longitude = scrapy.Field(input_processor=to_float)
@@ -21,8 +22,8 @@ class Area(scrapy.Item):
 
 
 class Route(scrapy.Item):
-    route_id = scrapy.Field(input_processor=to_int)
-    parent_id = scrapy.Field(input_processor=to_int)
+    route_id = scrapy.Field()
+    parent_id = scrapy.Field()
     name = scrapy.Field()
     types = scrapy.Field(input_processor=Join(", "))
     rating = scrapy.Field(input_processor=to_float)
@@ -33,24 +34,23 @@ class Route(scrapy.Item):
 
 
 class MonthlyTempAvg(scrapy.Item):
-    area_id = scrapy.Field(input_processor=to_int)
+    area_id = scrapy.Field()
     month = scrapy.Field()
     avg_low = scrapy.Field(input_processor=to_float)
     avg_high = scrapy.Field(input_processor=to_float)
 
 
 class MonthlyPrecipAvg(scrapy.Item):
-    area_id = scrapy.Field(input_processor=to_int)
+    area_id = scrapy.Field()
     month = scrapy.Field()
     avg_low = scrapy.Field(input_processor=to_float)
     avg_high = scrapy.Field(input_processor=to_float)
 
 
 class ClimbSeasonValue(scrapy.Item):
-    area_id = scrapy.Field(input_processor=to_int)
+    area_id = scrapy.Field()
     month = scrapy.Field()
     value = scrapy.Field(input_processor=to_float)
-
 
 
 class RouteGrades(scrapy.Item):
@@ -64,6 +64,6 @@ class RouteGrades(scrapy.Item):
 
 
 class RouteGrade(scrapy.Item):
-    route_id = scrapy.Field(input_processor=to_int)
+    route_id = scrapy.Field()
     grade = scrapy.Field()
     grade_system = scrapy.Field()

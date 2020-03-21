@@ -17,18 +17,18 @@ expected_items = {
             MonthlyTempAvg(area_id=106598130, month=10, avg_high=57, avg_low=32),
             MonthlyTempAvg(area_id=106598130, month=11, avg_high=33, avg_low=16),
             MonthlyTempAvg(area_id=106598130, month=12, avg_high=22, avg_low=4),
-            MonthlyPrecipAvg(area_id=106598130, month=0, avg_low=0.5, avg_high=3),
-            MonthlyPrecipAvg(area_id=106598130, month=1, avg_low=0.3, avg_high=3),
-            MonthlyPrecipAvg(area_id=106598130, month=2, avg_low=1, avg_high=4),
-            MonthlyPrecipAvg(area_id=106598130, month=3, avg_low=1.4, avg_high=5),
-            MonthlyPrecipAvg(area_id=106598130, month=4, avg_low=2.5, avg_high=8),
-            MonthlyPrecipAvg(area_id=106598130, month=5, avg_low=3.2, avg_high=10),
-            MonthlyPrecipAvg(area_id=106598130, month=6, avg_low=3.6, avg_high=9),
-            MonthlyPrecipAvg(area_id=106598130, month=7, avg_low=1.6, avg_high=5),
+            MonthlyPrecipAvg(area_id=106598130, month=1, avg_low=0.5, avg_high=3),
+            MonthlyPrecipAvg(area_id=106598130, month=2, avg_low=0.3, avg_high=3),
+            MonthlyPrecipAvg(area_id=106598130, month=3, avg_low=1, avg_high=4),
+            MonthlyPrecipAvg(area_id=106598130, month=4, avg_low=1.4, avg_high=5),
+            MonthlyPrecipAvg(area_id=106598130, month=5, avg_low=2.5, avg_high=8),
+            MonthlyPrecipAvg(area_id=106598130, month=6, avg_low=3.2, avg_high=10),
+            MonthlyPrecipAvg(area_id=106598130, month=7, avg_low=3.6, avg_high=9),
             MonthlyPrecipAvg(area_id=106598130, month=8, avg_low=1.6, avg_high=5),
-            MonthlyPrecipAvg(area_id=106598130, month=9, avg_low=1.5, avg_high=3),
-            MonthlyPrecipAvg(area_id=106598130, month=10, avg_low=0.8, avg_high=4),
-            MonthlyPrecipAvg(area_id=106598130, month=11, avg_low=0.4, avg_high=3)
+            MonthlyPrecipAvg(area_id=106598130, month=9, avg_low=1.6, avg_high=5),
+            MonthlyPrecipAvg(area_id=106598130, month=10, avg_low=1.5, avg_high=3),
+            MonthlyPrecipAvg(area_id=106598130, month=11, avg_low=0.8, avg_high=4),
+            MonthlyPrecipAvg(area_id=106598130, month=12, avg_low=0.4, avg_high=3)
         ],
         "three-oclock-rock": [
             Area(area_id=108543607, parent_id=106006698, name="Three O'clock Rock",
@@ -112,6 +112,91 @@ expected_items = {
         ]
     },
     "routes": {
-        
+        "ooh-la-la-express": [
+            Route(route_id=105764061, parent_id=105746817, name="Ooh La La Express", types="Trad, Snow, Alpine",
+                  rating=2, link="https://www.mountainproject.com/route/105764061/ooh-la-la-express", length="II", height=500),
+            RouteGrade(route_id=105764061, grade="Mod. Snow", grade_system="snow")
+        ],
+        "liberty-ridge": [
+            Route(route_id=106459197, parent_id=105877031, name="Liberty Ridge", types="Ice, Snow, Alpine",
+                  rating=3.8, link="https://www.mountainproject.com/route/106459197/liberty-ridge", length="IV", height=10500),
+            RouteGrade(route_id=106459197, grade="AI2-3", grade_system="ice"),
+            RouteGrade(route_id=106459197, grade="Steep Snow", grade_system="snow")
+        ],
+        "upper-exum-ridge": [
+            Route(route_id=105933562, parent_id=105803123, name="Upper Exum Ridge", types="Trad, Alpine",
+                  rating=3.6, link="https://www.mountainproject.com/route/105933562/upper-exum-ridge", length="II", height=1700, pitches=12),
+            RouteGrade(route_id=105933562, grade="5.5", grade_system="yds"),
+        ],
+        "the-moonlight-buttress-free": [
+            Route(route_id=106138026, parent_id=105717003, name="The Moonlight Buttress (Free)", types="Trad",
+                  rating=3.9, link="https://www.mountainproject.com/route/106138026/the-moonlight-buttress-free", height=1200, pitches=10),
+            RouteGrade(route_id=106138026, grade="5.12c", grade_system="yds"),
+        ],
+        "the-original-route": [
+            Route(route_id=105732410, parent_id=105732183, name="The Original Route", types="Trad",
+                  rating=4, link="https://www.mountainproject.com/route/105732410/the-original-route", height=1000, pitches=14),
+            RouteGrade(route_id=105732410, grade="5.12-", grade_system="yds"),
+        ],
+        "regular-northwest-face-of-half-dome": [
+            Route(route_id=105912416, parent_id=114557650, name="Regular Northwest Face of Half Dome", types="Trad, Aid",
+                  rating=3.9, link="https://www.mountainproject.com/route/105912416/regular-northwest-face-of-half-dome", height=2200, length="VI", pitches=23),
+            RouteGrade(route_id=105912416, grade="5.9", grade_system="yds"),
+            RouteGrade(route_id=105912416, grade="C1", grade_system="aid"),
+        ],
+        "moby-grape": [
+            Route(route_id=105884815, parent_id=107340355, name="Moby Grape", types="Trad, Alpine",
+                  rating=3.8, link="https://www.mountainproject.com/route/105884815/moby-grape", height=800, length="III", pitches=7),
+            RouteGrade(route_id=105884815, grade="5.8", grade_system="yds"),
+            RouteGrade(route_id=105884815, grade="PG13", grade_system="danger"),
+        ],
+        "invisible-touch": [
+            Route(route_id=109513995, parent_id=109255860, name="Invisible Touch", types="Boulder",
+                  rating=4, link="https://www.mountainproject.com/route/109513995/invisible-touch"),
+            RouteGrade(route_id=109513995, grade="V8", grade_system="v"),
+        ],
+        "planet-of-the-apes": [
+            Route(route_id=106318953, parent_id=105880707, name="Planet of the Apes", types="Boulder", height=12,
+                  rating=3.8, link="https://www.mountainproject.com/route/106318953/planet-of-the-apes"),
+            RouteGrade(route_id=106318953, grade="V7-", grade_system="v"),
+        ],
+        "the-red-house-extension": [
+            Route(route_id=108027966, parent_id=106031921, name="The Red House Extension", types="Boulder", height=15,
+                  rating=3.5, link="https://www.mountainproject.com/route/108027966/the-red-house-extension"),
+            RouteGrade(route_id=108027966, grade="V7+", grade_system="v"),
+        ],
+        "feels-like-grit": [
+            Route(route_id=105938571, parent_id=105880408, name="Feels Like Grit", types="Boulder", height=15,
+                  rating=3.2, link="https://www.mountainproject.com/route/105938571/feels-like-grit"),
+            RouteGrade(route_id=105938571, grade="V6-7", grade_system="v"),
+        ],
+        "black-dike": [
+            Route(route_id=105890633, parent_id=106099665, name="Black Dike", types="Mixed, Ice", height=500, pitches=3, length="IV",
+                  rating=3.9, link="https://www.mountainproject.com/route/105890633/black-dike"),
+            RouteGrade(route_id=105890633, grade="5.6", grade_system="yds"),
+            RouteGrade(route_id=105890633, grade="WI4-5", grade_system="ice"),
+            RouteGrade(route_id=105890633, grade="M3", grade_system="m"),
+        ],
+        "ames-ice-hose": [
+            Route(route_id=105747549, parent_id=105747000, name="Ames Ice Hose", types="Trad, Mixed, Ice", height=520, pitches=3, length="III",
+                  rating=4.0, link="https://www.mountainproject.com/route/105747549/ames-ice-hose"),
+            RouteGrade(route_id=105747549, grade="WI5", grade_system="ice"),
+            RouteGrade(route_id=105747549, grade="R", grade_system="danger"),
+            RouteGrade(route_id=105747549, grade="M6", grade_system="m"),
+        ],
+        "cosmiques-arete": [
+            Route(route_id=107497087, parent_id=110824971, name="Cosmiques Arête", types="Trad, Mixed, Ice, Snow, Alpine", height=1000, pitches=2, length="II",
+                  rating=3.8, link="https://www.mountainproject.com/route/107497087/cosmiques-arete"),
+            RouteGrade(route_id=107497087, grade="5.6", grade_system="yds"),
+            RouteGrade(route_id=107497087, grade="AI2", grade_system="ice"),
+            RouteGrade(route_id=107497087, grade="M4", grade_system="m"),
+            RouteGrade(route_id=107497087, grade="Mod. Snow", grade_system="snow"),
+        ],
+        "skylight": [
+            Route(route_id=105747482, parent_id=105746985, name="Skylight", types="Trad, Mixed, Ice", pitches=3, length="II",
+                  rating=3.8, link="https://www.mountainproject.com/route/105747482/skylight"),
+            RouteGrade(route_id=105747482, grade="WI4+", grade_system="ice"),
+            RouteGrade(route_id=105747482, grade="M4-5", grade_system="m"),
+        ],
     }
 }

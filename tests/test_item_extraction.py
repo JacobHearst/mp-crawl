@@ -12,10 +12,19 @@ class TestItemExtraction(unittest.TestCase):
         spider = MpSpider()
         areas = expected_items["areas"]
         for page in areas:
-            print("Testing area: %s" % page)
-            url = areas[page][0]["link"]
-            result = spider.parse_area(self.mock_response("areas", page, url))
-            compare_item_iter(self, areas[page], result)
+            with self.subTest(page=page):
+                url = areas[page][0]["link"]
+                result = spider.parse_area(self.mock_response("areas", page, url))
+                compare_item_iter(self, areas[page], result)
+
+    def test_route_extraction(self):
+        spider = MpSpider()
+        routes = expected_items["routes"]
+        for page in routes:
+            with self.subTest(page=page):
+                url = routes[page][0]["link"]
+                result = spider.parse_route(self.mock_response("routes", page, url))
+                compare_item_iter(self, routes[page], result)
 
     def mock_response(self, sub_dir, resource_name, url):
         request = Request(url=url)
