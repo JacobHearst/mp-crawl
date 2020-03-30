@@ -25,9 +25,7 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Setup
-      run: |
-        cd mountain-project-db-builder
-        pip install -r requirements.txt
+      run: pip install -r requirements.txt
 
     - name: Test application
       run: python -m unittest
