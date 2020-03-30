@@ -24,20 +24,3 @@ class TestSqlPipeline(unittest.TestCase):
 
         with self.assertRaises(DropItem):
             result = pipeline.process_item(item, None)
-
-    def test_sql_encode(self):
-        pipeline = SqlPipeline()
-        cases = [
-            (1, "1"),
-            ("", "NULL"),
-            ("String", "\"String\""),
-            ("Good 'Ol single quotes", "\"Good 'Ol single quotes\""),
-            ("\"Quotes\" - Quotes on quotes", "\"\"Quotes\" - Quotes on quotes\""),
-            (0, "0"),
-            (True, "True")
-        ]
-
-        for case in cases:
-            with self.subTest(case=case):
-                result = pipeline.sql_encode(case[0])
-                self.assertEqual(case[1], result)

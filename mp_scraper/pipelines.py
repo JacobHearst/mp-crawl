@@ -1,4 +1,3 @@
-from collections.abc import Sequence, Collection
 import json
 import logging
 import mysql.connector
@@ -56,14 +55,14 @@ class SqlPipeline(object):
 
     def process_item(self, item, spider):
         """Process an SQL query and execute it
-        
+
         Arguments:
             item {scrapy.Item} -- Item to add to the database
             spider {scrapy.Spider} -- Spider that the item came from
-        
+
         Raises:
             DropItem: Drops items missing required keys
-        
+
         Returns:
             scrapy.Item -- The unmodified scraped item
         """
@@ -79,58 +78,31 @@ class SqlPipeline(object):
             logging.debug("Processing %s" % item_class_name)
 
             try:
-                self.insert_item(item_metadata["table_name"], item)            
+                self.insert_item(item_metadata["table_name"], item)
             except Exception as e:
                 self.handle_exception(e)
 
             return item
 
     def insert_item(self, table_name, item):
-        encoded_vals = [self.sql_encode(val) for val in item.values()]
-        sql = "INSERT INTO %s (%s) VALUES (%s)" % (
-            table_name,
-            ", ".join(item.keys()),
-            ", ".join(encoded_vals)
-        )
-
+        sql = "INSERT INTO %s (%s) VALUES (%s)"
+        values = (table_name, ", ".join(item.keys()), ", ".join(item.values()))
         logging.debug(sql)
-        self.cursor.execute(sql)
 
-    def sql_encode(self, value):
-        """Encode provided value and return a valid SQL value
-        
-        Arguments:
-            value {Any} -- Value to encode
-        
-        Returns:
-            str -- SQL encode value as a str
-        """
-        encoded_val = None
-        is_empty = False
-
-        if isinstance(value, str):
-            is_empty = len(value) == 0
-
-        encoded_val = "NULL" if is_empty or value is None else value
-
-        if isinstance(encoded_val, str) and encoded_val is not "NULL":
-            encode_val = encoded_val.replace("\"", "\\\"")
-            encoded_val = "\"%s\"" % encoded_val
-
-        return str(encoded_val)
+        self.cursor.execute(sql, values)
 
     def handle_exception(self, exception):
         """Handle exceptions arising from inserting records
-        
+
         Arguments:
             exception {Exception} -- The exception that was thrown
-        
+
         Raises:
             exception: Raises the original exception if it's unrecognized
-        """        
+        """
         if type(exception) is errors.IntegrityError:
             if exception.errno != errorcode.ER_DUP_ENTRY:
                 raise exception
-        
+
         else:
             raise exception
