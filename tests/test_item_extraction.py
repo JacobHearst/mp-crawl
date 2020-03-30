@@ -30,7 +30,7 @@ class TestItemExtraction(unittest.TestCase):
         request = Request(url=url)
 
         responses_dir = os.path.dirname(os.path.realpath(__file__))
-        file_path = os.path.join(responses_dir, "pages\\%s\\%s.html" % (sub_dir, resource_name))
+        file_path = os.path.join(responses_dir, "pages", sub_dir, resource_name + ".html")
         file_obj = open(file_path, 'r', encoding="utf-8")
 
         response = HtmlResponse(url=url, request=request,
