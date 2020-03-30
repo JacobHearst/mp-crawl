@@ -12,7 +12,7 @@
 BOT_NAME = 'mp_scraper'
 
 LOG_LEVEL = 'INFO'
-# LOG_FILE = 'log.txt'
+LOG_FILE = 'log.txt'
 
 SPIDER_MODULES = ['mp_scraper.spiders']
 NEWSPIDER_MODULE = 'mp_scraper.spiders'
@@ -49,10 +49,9 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-SPIDER_MIDDLEWARES = {
-#    'mp_scraper.middlewares.route.RouteMiddleware': 100,
-   'mp_scraper.middlewares.area.AreaMiddleware': 200,
-}
+# SPIDER_MIDDLEWARES = {
+   
+# }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
@@ -69,7 +68,7 @@ SPIDER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'mp_scraper.pipelines.sql.SqlPipeline': 100
+    'mp_scraper.pipelines.SqlPipeline': 100
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -87,8 +86,8 @@ ITEM_PIPELINES = {
 
 # Enable and configure HTTP caching (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-HTTPCACHE_ENABLED = True
-HTTPCACHE_EXPIRATION_SECS = 0
-HTTPCACHE_DIR = 'httpcache'
-HTTPCACHE_IGNORE_HTTP_CODES = []
-HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+# HTTPCACHE_ENABLED = True
+# HTTPCACHE_EXPIRATION_SECS = 604800 # 1 week
+# HTTPCACHE_DIR = 'httpcache'
+# HTTPCACHE_IGNORE_HTTP_CODES = []
+# HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
