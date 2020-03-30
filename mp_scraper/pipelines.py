@@ -93,6 +93,7 @@ class SqlPipeline(object):
             ", ".join(encoded_vals)
         )
 
+        logging.debug(sql)
         self.cursor.execute(sql)
 
     def sql_encode(self, value):

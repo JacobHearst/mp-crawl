@@ -18,8 +18,8 @@ class MpSpider(CrawlSpider):
     rules = (
         Rule(LinkExtractor(
             allow=(r"\.com\/area\/\d+/[\w\d-]+$")), callback="parse_area", follow=True),
-        # Rule(LinkExtractor(
-        #     allow=(r"\.com\/route\/\d+/[\w\d-]+$")), callback="parse_route"),
+        Rule(LinkExtractor(
+            allow=(r"\.com\/route\/\d+/[\w\d-]+$")), callback="parse_route"),
     )
 
     months = dict((v, k) for k, v in enumerate(calendar.month_name))
