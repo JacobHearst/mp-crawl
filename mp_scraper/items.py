@@ -28,7 +28,7 @@ class Route(scrapy.Item):
     _id = scrapy.Field()
     parent_id = scrapy.Field()
     name = scrapy.Field()
-    types = scrapy.Field(input_processor=Join(", "))
+    types = scrapy.Field(output_processor=Identity())
     rating = scrapy.Field(input_processor=to_float)
     link = scrapy.Field()
     length = scrapy.Field()
