@@ -12,13 +12,20 @@ API. The ultimate goal of this project is to allow 3rd party developers to provi
   3. Run `pip install -r requirements.txt`
   4. (Optional) Create a file called creds.py in the project root and enter the following with your details substituted
   
-    USER="<YOUR_MONGO_USER>"
-    PASS="<YOUR_MONGO_PASSWORD>"
+    URI="<YOUR_MONGO_URI>"
+    DATABASE="<YOUR_MONGO_DATABASE_NAME>"
 
 ## Usage
 The spider can be started with: `scrapy crawl mp`
 
-Alternatively if you didn't perform step 4, use `scrapy crawl mp -s MONGO_URI=<YOUR_MONGO_URI>`
+Alternatively if you didn't perform step 4, use:
+
+`scrapy crawl mp -s MONGO_URI=<YOUR_MONGO_URI> MONGO_DATABASE=<YOUR_MONGO_DATABASE_NAME>`
+
+## What if I don't want to use MongoDB?
+If MongoDB doesn't suit your needs, creating a new serialization pipeline is fairly trivial. I recommend looking at
+[Scrapy's Item Pipeline docs](https://docs.scrapy.org/en/latest/topics/item-pipeline.html) as a starting place. All items coming
+into the pipeline are defined in `mp_scraper/items.py`.
 
 ## Contributing
 If you've somehow stumbled across this project and want to help, I try to open issues for things that I want changed. At the
