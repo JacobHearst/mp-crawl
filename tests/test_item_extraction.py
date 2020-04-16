@@ -2,7 +2,6 @@ from mp_scraper.spiders.mp import MpSpider
 from mp_scraper.items import Area, Route
 import os
 from scrapy.http import Request, HtmlResponse
-from tests import compare_item_iter
 from tests.pages.expected_items import expected_items
 import unittest
 
@@ -13,18 +12,18 @@ class TestItemExtraction(unittest.TestCase):
         areas = expected_items["areas"]
         for page in areas:
             with self.subTest(page=page):
-                url = areas[page][0]["link"]
+                url = areas[page]["link"]
                 result = spider.parse_area(self.mock_response("areas", page, url))
-                compare_item_iter(self, areas[page], result)
+                self.assertDictEqual(dict(areas[page]), dict(result))
 
     def test_route_extraction(self):
         spider = MpSpider()
         routes = expected_items["routes"]
         for page in routes:
             with self.subTest(page=page):
-                url = routes[page][0]["link"]
+                url = routes[page]["link"]
                 result = spider.parse_route(self.mock_response("routes", page, url))
-                compare_item_iter(self, routes[page], result)
+                self.assertDictEqual(dict(routes[page]), dict(result))
 
     def mock_response(self, sub_dir, resource_name, url):
         request = Request(url=url)

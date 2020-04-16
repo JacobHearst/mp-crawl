@@ -144,7 +144,7 @@ class MpSpider(CrawlSpider):
                     "month": self.months[val[0]],
                     "avg_low": float(min(val[1], val[2])),
                     "avg_high": float(max(val[1], val[2]))
-                } for val in monthly_avg_vals]
+                } for val in monthly_avg_vals if len(val) > 0]
 
         # No temp/precip data for the given area
         return []
@@ -166,7 +166,7 @@ class MpSpider(CrawlSpider):
                 {
                     "month": int(self.months[val[0]]),
                     "popularity": float(val[1])
-                } for val in climb_season_vals]
+                } for val in climb_season_vals if len(val) > 0]
 
         # No climb season data for the given area
         return []

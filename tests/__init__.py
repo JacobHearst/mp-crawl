@@ -12,7 +12,4 @@ def compare_item_iter(test_case, first, second):
         with test_case.subTest(expected=item, actual=second[index]):
             test_case.assertDictEqual(dict(item), dict(second[index]))
 
-    # if isinstance(first[0], Route):
-    #     if first[0]["route_id"] == 106138026:
-    #         print(second[-1])
     test_case.assertEqual(len(first), len(second))
