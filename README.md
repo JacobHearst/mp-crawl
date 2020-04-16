@@ -24,9 +24,10 @@ Alternatively if you didn't perform step 4, use:
 
 Note that this command will both log debug output to console, and log your configured level to your configured logfile
 
-As Mountain Project contains a rather impressive amount of areas and routes, expect this crawler to take several hours. By
-default the logging level is `INFO` the log file is `log.txt`. These values are configurable in `mp_scraper/settings.py`.
-For more information check [Scrapy's docs](https://docs.scrapy.org/en/latest/topics/settings.html#log-enabled)
+As Mountain Project contains a rather impressive amount of areas and routes, expect this crawler to take several hours. I
+highly recommend using [Scrapy's built in job manager](https://docs.scrapy.org/en/latest/topics/jobs.html) so that you can stop
+the crawl without losing where you left off. By default the logging level is `INFO` the log file is `log.txt`. These values are
+configurable in `mp_scraper/settings.py`. For more information on settings check [Scrapy's docs](https://docs.scrapy.org/en/latest/topics/settings.html#log-enabled)
 
 ## What if I don't want to use MongoDB?
 If MongoDB doesn't suit your needs, creating a new serialization pipeline is fairly trivial. I recommend looking at
