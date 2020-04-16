@@ -9,8 +9,6 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-from creds import USER, PASS
-
 BOT_NAME = 'mp_scraper'
 
 LOG_LEVEL = 'INFO'
@@ -94,5 +92,11 @@ ITEM_PIPELINES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-MONGO_URI = f"mongodb+srv://{USER}:{PASS}@cluster0-bq0yi.gcp.mongodb.net/test?retryWrites=true&w=majority"
-MONGO_DATABASE = "mountainproject"
+import logging
+
+try:
+    from mongo_config import URI, DATABASE
+    MONGO_URI = URI
+    MONGO_DATABASE = DATABASE
+except Exception:
+    logging.info("No mongo config found, assuming commandline options are being used")

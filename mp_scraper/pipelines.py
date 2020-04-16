@@ -20,10 +20,17 @@ class MongoPipeline(object):
     def from_crawler(cls, crawler):
         return cls(
             mongo_uri=crawler.settings.get("MONGO_URI"),
-            mongo_db=crawler.settings.get("MONGO_DATABASE", "mountainproject")
+            mongo_db=crawler.settings.get("MONGO_DATABASE")
         )
 
     def open_spider(self, spider):
+        if self.mongo_uri is None:
+            spider.crawler.engine.close_spider(self, reason="No URI provided")
+
+        if self.mongo_db is None:
+            spider.crawler.engine.close_spider(self, reason="No database provided")
+            
+
         self.client = MongoClient(self.mongo_uri)
         self.db = self.client[self.mongo_db]
 
