@@ -6,6 +6,8 @@ from mp_scraper.items import Area
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 
+from scrapy.exceptions import CloseSpider
+
 
 class MongoPipeline(object):
     def __init__(self, mongo_uri, mongo_db):
@@ -25,14 +27,12 @@ class MongoPipeline(object):
 
     def open_spider(self, spider):
         if self.mongo_uri is None:
-            spider.crawler.engine.close_spider(self, reason="No URI provided")
-
-        if self.mongo_db is None:
-            spider.crawler.engine.close_spider(self, reason="No database provided")
-            
-
-        self.client = MongoClient(self.mongo_uri)
-        self.db = self.client[self.mongo_db]
+            raise CloseSpider("Missing Mongo URI")
+        elif self.mongo_db is None:
+            raise CloseSpider("Missing Mongo database")
+        else:
+            self.client = MongoClient(self.mongo_uri)
+            self.db = self.client[self.mongo_db]
 
     def close_spider(self, spider):
         logging.info(f"Skipped {self.area_duplicates} already seen areas")
