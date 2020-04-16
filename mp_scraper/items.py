@@ -1,5 +1,5 @@
 import scrapy
-from scrapy.loader.processors import Compose, TakeFirst, Join
+from scrapy.loader.processors import Compose, TakeFirst, Join, Identity
 from scrapy.loader import ItemLoader
 
 
@@ -12,17 +12,20 @@ class MpItemLoader(ItemLoader):
 
 
 class Area(scrapy.Item):
-    area_id = scrapy.Field()
+    _id = scrapy.Field()
     parent_id = scrapy.Field()
     name = scrapy.Field()
     latitude = scrapy.Field(input_processor=to_float)
     longitude = scrapy.Field(input_processor=to_float)
     elevation = scrapy.Field(input_processor=Join(""), output_processor=to_int)
     link = scrapy.Field()
+    temp_avgs = scrapy.Field(output_processor=Identity())
+    precip_avgs = scrapy.Field(output_processor=Identity())
+    climb_season = scrapy.Field(output_processor=Identity())
 
 
 class Route(scrapy.Item):
-    route_id = scrapy.Field()
+    _id = scrapy.Field()
     parent_id = scrapy.Field()
     name = scrapy.Field()
     types = scrapy.Field(input_processor=Join(", "))
@@ -31,39 +34,4 @@ class Route(scrapy.Item):
     length = scrapy.Field()
     pitches = scrapy.Field(input_processor=to_int)
     height = scrapy.Field(input_processor=to_int)
-
-
-class MonthlyTempAvg(scrapy.Item):
-    area_id = scrapy.Field()
-    month = scrapy.Field()
-    avg_low = scrapy.Field(input_processor=to_float)
-    avg_high = scrapy.Field(input_processor=to_float)
-
-
-class MonthlyPrecipAvg(scrapy.Item):
-    area_id = scrapy.Field()
-    month = scrapy.Field()
-    avg_low = scrapy.Field(input_processor=to_float)
-    avg_high = scrapy.Field(input_processor=to_float)
-
-
-class ClimbSeasonValue(scrapy.Item):
-    area_id = scrapy.Field()
-    month = scrapy.Field()
-    value = scrapy.Field(input_processor=to_float)
-
-
-class RouteGrades(scrapy.Item):
-    yds = scrapy.Field()
-    ice = scrapy.Field()
-    danger = scrapy.Field()
-    aid = scrapy.Field()
-    m = scrapy.Field()
-    v = scrapy.Field()
-    snow = scrapy.Field()
-
-
-class RouteGrade(scrapy.Item):
-    route_id = scrapy.Field()
-    grade = scrapy.Field()
-    grade_system = scrapy.Field()
+    grades = scrapy.Field()

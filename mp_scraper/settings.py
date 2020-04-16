@@ -9,6 +9,8 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+from creds import USER, PASS
+
 BOT_NAME = 'mp_scraper'
 
 LOG_LEVEL = 'INFO'
@@ -68,7 +70,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'mp_scraper.pipelines.SqlPipeline': 100
+    'mp_scraper.pipelines.MongoPipeline': 100
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -91,3 +93,6 @@ ITEM_PIPELINES = {
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+MONGO_URI = f"mongodb+srv://{USER}:{PASS}@cluster0-bq0yi.gcp.mongodb.net/test?retryWrites=true&w=majority"
+MONGO_DATABASE = "mountainproject"

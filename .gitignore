@@ -15,7 +15,7 @@ build/
 crawls/
 
 # Configuration
-db_config.json
+creds.py
 
 # Misc
 notes.txt

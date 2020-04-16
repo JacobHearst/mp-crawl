@@ -2,7 +2,7 @@
 import calendar
 import json
 import logging
-from mp_scraper.items import Area, Route, RouteGrade, ClimbSeasonValue, MonthlyTempAvg, MonthlyPrecipAvg, MpItemLoader, RouteGrades
+from mp_scraper.items import Area, Route, MpItemLoader
 import re
 import scrapy
 from scrapy.linkextractors import LinkExtractor
@@ -26,70 +26,74 @@ class MpSpider(CrawlSpider):
 
     def parse_area(self, response):
         """Extract area data from page
-        
+
         Arguments:
             response {scrapy.http.Response} -- Scrapy response for the area
-        
+
         Returns:
             list[Item] -- List of items extracted from the page
         """
         area_loader = MpItemLoader(item=Area(), response=response)
-        area_id = self.extract_id(response.url)
+        id = self.extract_id(response.url)
 
         area_loader.add_value("link", response.url)
-        area_loader.add_value("area_id", area_id)
+        area_loader.add_value("_id", id)
         area_loader.add_value("parent_id", self.extract_parent_id(response))
-        area_loader.add_css("name", "title::text", re="(?<=[Climbing|Bouldering] in )(.+?)(?:,|$)")
+        area_loader.add_css("name", "title::text",
+                            re=r"(?<=[Climbing|Bouldering] in )(.+?)(?:,|$)")
 
         details_css = "table.description-details td::text"
-        coords = response.css(details_css).re(r"(-?\d+(?:\.\d+)?),\s(-?\d+(?:\.\d+)?)")
+        coords = response.css(details_css).re(
+            r"(-?\d+(?:\.\d+)?),\s(-?\d+(?:\.\d+)?)")
         area_loader.add_value("latitude", coords[0])
         area_loader.add_value("longitude", coords[1])
-        area_loader.add_css("elevation", details_css, re="(\d+),?(\d+) ft")
+        area_loader.add_css("elevation", details_css, re=r"(\d+),?(\d+) ft")
 
-        return [
-            area_loader.load_item(),
-            *self.extract_climb_season(area_id, response),
-            *self.extract_monthly_avg(area_id, response, "dataTemps"),
-            *self.extract_monthly_avg(area_id, response, "dataPrecip")
-        ]
+        area_loader.add_value(
+            "temp_avgs", self.extract_monthly_avg(response, "dataTemps"))
+        area_loader.add_value(
+            "precip_avgs", self.extract_monthly_avg(response, "dataPrecip"))
+        area_loader.add_value(
+            "climb_season", self.extract_climb_season(response))
 
+        return area_loader.load_item()
 
     def parse_route(self, response):
         """Extract route data from page
-        
+
         Arguments:
             response {scrapy.http.Response} -- Scrapy response for the route
-        
+
         Returns:
             list[Item] -- List of items extracted from the page
         """
         route_loader = MpItemLoader(item=Route(), response=response)
-        route_id = self.extract_id(response.url)
+        id = self.extract_id(response.url)
 
         route_loader.add_value("link", response.url)
-        route_loader.add_value("route_id", route_id)
+        route_loader.add_value("_id", id)
         route_loader.add_value("parent_id", self.extract_parent_id(response))
-        route_loader.add_css("name", "title::text", re="(?<=Climb )(.+?)(?:,|$)")
-        route_loader.add_css("rating", "#route-star-avg span a span::text", re="Avg: (\d(\.\d)?)")
+        route_loader.add_css("name", "title::text",
+                             re=r"(?<=Climb )(.+?)(?:,|$)")
+        route_loader.add_css(
+            "rating", "#route-star-avg span a span::text", re=r"Avg: (\d(\.\d)?)")
 
         details_css = "table.description-details td::text"
-        route_loader.add_css("types", details_css, re="(TR|Trad|Ice|Snow|Alpine|Aid|Boulder|Sport|Mixed)")
-        route_loader.add_css("length", details_css, re="Grade ([IVX]+)")
-        route_loader.add_css("pitches", details_css, re="(\d+) pitches")
-        route_loader.add_css("height", details_css, re="(\d+) ft")
+        route_loader.add_css(
+            "types", details_css, re=r"(TR|Trad|Ice|Snow|Alpine|Aid|Boulder|Sport|Mixed)")
+        route_loader.add_css("length", details_css, re=r"Grade ([IVX]+)")
+        route_loader.add_css("pitches", details_css, re=r"(\d+) pitches")
+        route_loader.add_css("height", details_css, re=r"(\d+) ft")
+        route_loader.add_value("grades", self.extract_grades(response))
 
-        return [
-            route_loader.load_item(),
-            *self.extract_grades(response, route_id)
-        ]        
+        return route_loader.load_item()
 
     def extract_id(self, link):
         """Extract the Mountain Project id for a resource from its link
-        
+
         Arguments:
             link {str} -- Link to extract the ID From
-        
+
         Returns:
             int -- The Mountain Project ID in the given link
         """
@@ -109,98 +113,83 @@ class MpSpider(CrawlSpider):
 
     def extract_monthly_data(self, response, var_name):
         """Extract the JavaScript arrays containing monthly data
-        
+
         Arguments:
             response {scrapy.http.Response} -- Scrapy response for the area
             var_name {str} -- Name of the variable to extract
-        
+
         Returns:
             list -- The 2D list of monthly data
         """
         regex = re.compile(var_name + r" = (\[.+\]);")
-        rawAvgs = response.css("script::text").re_first(regex)
+        data = response.css("script::text").re_first(regex)
 
-        return json.loads(rawAvgs)
+        return json.loads(data)
 
-    def extract_monthly_avg(self, area_id, response, var_name):
+    def extract_monthly_avg(self, response, var_name):
         """Extract a javascript array containing monthly averages for an area
-        
+
         Arguments:
-            area_id {int} -- ID of the area that the average belongs to
             response {scrapy.http.Response} -- Scrapy response for the area
             var_name {str} -- Name of the variable to extract
-        
+
         Returns:
-            list -- The parsed monthly averages extracted from the array (if any, otherwise returns None)
+            list -- The parsed monthly averages extracted from the array (if any, otherwise returns empty list)
         """
         monthly_avg_vals = self.extract_monthly_data(response, var_name)
-        item_type = MonthlyTempAvg if var_name == "dataTemps" else MonthlyPrecipAvg
-        low_index = 2 if var_name == "dataTemps" else 1
-        high_index = 1 if var_name == "dataTemps" else 2
 
         if len(monthly_avg_vals) > 0:
             return [
-                item_type(
-                    area_id=area_id,
-                    month=self.months[val[0]],
-                    avg_low=val[low_index],
-                    avg_high=val[high_index]
-                ) for val in monthly_avg_vals if len(val) > 0]
-        
+                {
+                    "month": self.months[val[0]],
+                    "avg_low": float(min(val[1], val[2])),
+                    "avg_high": float(max(val[1], val[2]))
+                } for val in monthly_avg_vals]
+
         # No temp/precip data for the given area
         return []
 
-    def extract_climb_season(self, area_id, response):
+    def extract_climb_season(self, response):
         """Extract the climbing season data for an area
-        
+
         Arguments:
-            area_id {int} -- ID of the area that the data belongs to
             response {scrapy.http.Response} -- Scrapy response for the area
-        
+
         Returns:
-            list[ClimbSeasonValue] -- The parsed monthly averages extracted from the array (if any, otherwise returns None)
+            list[ClimbSeasonValue] -- The parsed monthly averages extracted from the array (if any, otherwise returns empty list)
         """
-        climb_season_vals = self.extract_monthly_data(response, "dataClimbSeason")
+        climb_season_vals = self.extract_monthly_data(
+            response, "dataClimbSeason")
 
         if len(climb_season_vals) > 0:
             return [
-                ClimbSeasonValue(
-                    area_id=area_id,
-                    month=self.months[val[0]],
-                    value=val[1]
-                ) for val in climb_season_vals if len(val) > 0]
-        
+                {
+                    "month": int(self.months[val[0]]),
+                    "popularity": float(val[1])
+                } for val in climb_season_vals]
+
         # No climb season data for the given area
         return []
 
+    def extract_grades(self, response):
+        """Extract grade data from the page and return a dict containing the non-null grades
 
-    def extract_grades(self, response, route_id):
-        """Extract grade data from the page and return a list of RouteGrade items
-        
         Arguments:
             response {scrapy.http.Response} -- Scrapy response for the route
-            route_id {int} -- Route ID that the grade(s) belong to
-        
+
         Returns:
-            list[RouteGrade] -- A list of the grades associated with the route
+            dict -- A dict of the grades associated with the route
         """
-        grade_info_css = "div.col-md-9 > h2"
+        grade_info = response.css("div.col-md-9 > h2")
 
-        grades_loader = MpItemLoader(item=RouteGrades(), response=response)
-        grades_loader.add_css("yds", grade_info_css, re="(5\.[\d\w\+\-\?/]{1,5}|3rd|4th|Easy 5th)")
-        grades_loader.add_css("ice", grade_info_css, re="[WA]I\d(?:-\d)?[\+-]?")
-        grades_loader.add_css("danger", grade_info_css, re=" (R|X|PG13)")
-        grades_loader.add_css("aid", grade_info_css, re="[CA]\d\+?")
-        grades_loader.add_css("m", grade_info_css, re="M[\d-]+")
-        grades_loader.add_css("v", grade_info_css, re="V\d+[\+-]?\d*(?:easy)?")
-        grades_loader.add_css("snow", grade_info_css, re="\w+\.? ?Snow")
+        grades = {
+            "yds": grade_info.re_first(r"(5\.[\d\w\+\-\?/]{1,5}|3rd|4th|Easy 5th)"),
+            "ice": grade_info.re_first(r"[WA]I\d(?:-\d)?[\+-]?"),
+            "danger": grade_info.re_first(r" (R|X|PG13)"),
+            "aid": grade_info.re_first(r"[CA]\d\+?"),
+            "m": grade_info.re_first(r"M[\d-]+"),
+            "v": grade_info.re_first(r"V\d+[\+-]?\d*(?:easy)?"),
+            "snow": grade_info.re_first(r"\w+\.? ?Snow")
+        }
 
-        grades = grades_loader.load_item()
-
-        # Convert grades to RouteGrade and filter 
-        return [
-            RouteGrade(
-                route_id=route_id,
-                grade=grades[grade],
-                grade_system=grade
-            ) for grade in grades if grades[grade] is not None]
+        return {k: v for k, v in grades.items() if v is not None}

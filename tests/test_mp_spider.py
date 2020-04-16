@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import MagicMock
 
 from mp_scraper.spiders.mp import MpSpider
-from mp_scraper.items import MonthlyTempAvg, MonthlyPrecipAvg, ClimbSeasonValue
 
 from tests import compare_item_iter
 
@@ -43,18 +42,18 @@ class TestMpSpider(unittest.TestCase):
         spider.extract_monthly_data = MagicMock(return_value=data)
 
         expected = [
-            MonthlyPrecipAvg(area_id=area_id, month=1, avg_high=1, avg_low=2),
-            MonthlyPrecipAvg(area_id=area_id, month=2, avg_high=3, avg_low=4),
-            MonthlyPrecipAvg(area_id=area_id, month=3, avg_high=5, avg_low=6),
-            MonthlyPrecipAvg(area_id=area_id, month=4, avg_high=7, avg_low=8),
-            MonthlyPrecipAvg(area_id=area_id, month=5, avg_high=9, avg_low=10),
-            MonthlyPrecipAvg(area_id=area_id, month=6, avg_high=11, avg_low=12),
-            MonthlyPrecipAvg(area_id=area_id, month=7, avg_high=13, avg_low=14),
-            MonthlyPrecipAvg(area_id=area_id, month=8, avg_high=15, avg_low=16),
-            MonthlyPrecipAvg(area_id=area_id, month=9, avg_high=17, avg_low=18),
-            MonthlyPrecipAvg(area_id=area_id, month=10, avg_high=19, avg_low=20),
-            MonthlyPrecipAvg(area_id=area_id, month=11, avg_high=21, avg_low=22),
-            MonthlyPrecipAvg(area_id=area_id, month=12, avg_high=23, avg_low=24)
+            [1, 2],
+            [3, 4],
+            [5, 6],
+            [7, 8],
+            [9, 10],
+            [11, 12],
+            [13, 14],
+            [15, 16],
+            [17, 18],
+            [19, 20],
+            [21, 22],
+            [23, 24]
         ]
 
         result = spider.extract_monthly_avg(area_id, None, "dataPrecip")

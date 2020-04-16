@@ -1,5 +1,5 @@
 from mp_scraper.spiders.mp import MpSpider
-from mp_scraper.items import MonthlyTempAvg, MonthlyPrecipAvg, ClimbSeasonValue, Area, Route
+from mp_scraper.items import Area, Route
 import os
 from scrapy.http import Request, HtmlResponse
 from tests import compare_item_iter
