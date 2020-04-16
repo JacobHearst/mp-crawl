@@ -20,7 +20,9 @@ The spider can be started with: `scrapy crawl mp`
 
 Alternatively if you didn't perform step 4, use:
 
-`scrapy crawl mp -s MONGO_URI=<YOUR_MONGO_URI> MONGO_DATABASE=<YOUR_MONGO_DATABASE_NAME>`
+`scrapy crawl mp -s MONGO_URI=<YOUR_MONGO_URI> -s MONGO_DATABASE=<YOUR_MONGO_DATABASE_NAME>`
+
+Note that this command will both log debug output to console, and log your configured level to your configured logfile
 
 As Mountain Project contains a rather impressive amount of areas and routes, expect this crawler to take several hours. By
 default the logging level is `INFO` the log file is `log.txt`. These values are configurable in `mp_scraper/settings.py`.
