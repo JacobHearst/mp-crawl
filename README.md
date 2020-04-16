@@ -22,6 +22,10 @@ Alternatively if you didn't perform step 4, use:
 
 `scrapy crawl mp -s MONGO_URI=<YOUR_MONGO_URI> MONGO_DATABASE=<YOUR_MONGO_DATABASE_NAME>`
 
+As Mountain Project contains a rather impressive amount of areas and routes, expect this crawler to take several hours. By
+default the logging level is `INFO` the log file is `log.txt`. These values are configurable in `mp_scraper/settings.py`.
+For more information check [Scrapy's docs](https://docs.scrapy.org/en/latest/topics/settings.html#log-enabled)
+
 ## What if I don't want to use MongoDB?
 If MongoDB doesn't suit your needs, creating a new serialization pipeline is fairly trivial. I recommend looking at
 [Scrapy's Item Pipeline docs](https://docs.scrapy.org/en/latest/topics/item-pipeline.html) as a starting place. All items coming
