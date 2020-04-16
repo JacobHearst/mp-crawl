@@ -33,9 +33,3 @@ configurable in `mp_scraper/settings.py`. For more information on settings check
 If MongoDB doesn't suit your needs, creating a new serialization pipeline is fairly trivial. I recommend looking at
 [Scrapy's Item Pipeline docs](https://docs.scrapy.org/en/latest/topics/item-pipeline.html) as a starting place. All items coming
 into the pipeline are defined in `mp_scraper/items.py`.
-
-## Contributing
-If you've somehow stumbled across this project and want to help, I try to open issues for things that I want changed. At the
-time of writing this, I don't expect anybody to be contributing other than me for a long time (maybe ever). However, if you do
-want to contribute and an issue doesn't have enough information, leave a comment and I can give you a better idea of what I
-was thinking.
