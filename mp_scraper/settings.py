@@ -68,7 +68,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'mp_scraper.pipelines.SqlPipeline': 100
+    'mp_scraper.pipelines.MongoPipeline': 100
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -91,3 +91,12 @@ ITEM_PIPELINES = {
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+import logging
+
+try:
+    from mongo_config import URI, DATABASE
+    MONGO_URI = URI
+    MONGO_DATABASE = DATABASE
+except Exception:
+    logging.info("No mongo config found, assuming commandline options are being used")

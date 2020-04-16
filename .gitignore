@@ -15,7 +15,7 @@ build/
 crawls/
 
 # Configuration
-db_config.json
+mongo_config.py
 
 # Misc
 notes.txt
