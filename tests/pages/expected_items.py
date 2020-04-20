@@ -349,5 +349,17 @@ expected_items = {
                 "m": "M4-5",
             }
         ),
+        "rock": Route(
+            _id=107350537,
+            parent_id=107282156,
+            name="Rock",
+            types=["Boulder"],
+            height=8,
+            rating=1.0,
+            link="https://www.mountainproject.com/route/107350537/rock",
+            grades={
+                "v": "V-easy"
+            }
+        )
     }
 }
