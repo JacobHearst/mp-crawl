@@ -1,4 +1,4 @@
-from mp_scraper.grades import YDS, Hueco, Ice
+from mp_scraper.grades import YDS, Hueco, Ice, Danger
 import unittest
 
 

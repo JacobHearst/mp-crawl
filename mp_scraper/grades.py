@@ -6,6 +6,7 @@ class Grade:
     def __init__(self, grade):
         self.grade = grade
 
+
 class YDS(Grade):
     static_indexes = ["3rd", "4th", "Easy 5th"]
     single_digit_mplier = 3
@@ -82,7 +83,7 @@ class Hueco(Grade):
         """
         if self.grade in ["V-easy", "VB"]:
             return 0
-        
+
         # Remove the 'V' prefix
         v_grade = self.grade[1:]
 
@@ -95,7 +96,7 @@ class Hueco(Grade):
         elif re.match(r"\d+-\d+", v_grade) is not None:
             # Vx-y
             number_grade = int(re.match(r"(\d+)-\d+", v_grade)[1])
-            offset += 1 # An offset of 2 brings us to the index for Vx+
+            offset += 1  # An offset of 2 brings us to the index for Vx+
         elif "+" in v_grade:
             # Vx+
             number_grade = int(v_grade[:-1])
@@ -107,7 +108,8 @@ class Hueco(Grade):
         else:
             logging.error(f"Unrecognized grade pattern {self.grade}")
 
-        return number_grade * 3 + offset + 1 # Add 1 to account for VB/V-easy
+        return number_grade * 3 + offset + 1  # Add 1 to account for VB/V-easy
+
 
 class Ice(Grade):
     def index(self):
@@ -130,7 +132,7 @@ class Ice(Grade):
         elif re.match(r"\d+-\d+", ice_grade) is not None:
             # Ix-y
             number_grade = int(re.match(r"(\d+)-\d+", ice_grade)[1])
-            offset += 1 # An offset of 2 brings us to the index for Ix+
+            offset += 1  # An offset of 2 brings us to the index for Ix+
         elif "+" in ice_grade:
             # Ix+
             number_grade = int(ice_grade[:-1])
@@ -144,3 +146,8 @@ class Ice(Grade):
 
         # Subtract 1 from the grade so that the range is 0-8 instead of 1-8
         return (number_grade - 1) * 3 + offset
+
+
+class Danger(Grade):
+    def index(self):
+        return ["PG13", "R", "X"].index(self.grade)
