@@ -1,4 +1,4 @@
-from mp_scraper.grades import YDS, Hueco, Ice, Danger
+from mp_scraper.grades import YDS, Hueco, Ice, Danger, Aid
 import unittest
 
 
@@ -61,6 +61,19 @@ class TestGrades(unittest.TestCase):
             ["AI2+", 5],
             ["AI1-", 0],
         ], Ice)
+
+    def test_aid(self):
+        self.run_test_matrix([
+            ["A0", 1],
+            ["A2", 7],
+            ["A3+", 11],
+            ["A5", 16],
+            ["A2-", 6],
+            ["C1", 4],
+            ["C4-", 12],
+            ["C2+", 8],
+            ["C1-", 3],
+        ], Aid)
 
 
 if __name__ == "__main__":

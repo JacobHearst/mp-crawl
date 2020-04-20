@@ -148,6 +148,37 @@ class Ice(Grade):
         return (number_grade - 1) * 3 + offset
 
 
+class Aid(Grade):
+    def index(self):
+        """Get the sorting index for an Aid climbing grade
+        Indexing goes from A1-A8
+        Each grade is defined as having 3 potential values ordered as follows: Ax-, Ax, Ax+
+        Cx grades are treated as equal to Ax
+        """
+
+        # Remove the 'A'/'C' prefix
+        ice_grade = self.grade[1:]
+
+        number_grade = None
+        offset = 1  # An offset of 1 brings us to the index for Ax
+
+        if all(char.isdigit() for char in ice_grade):
+            # Ax
+            number_grade = int(ice_grade)
+        elif "+" in ice_grade:
+            # Ax+
+            number_grade = int(ice_grade[:-1])
+            offset += 1
+        elif "-" in ice_grade:
+            # Ax-
+            number_grade = int(ice_grade[:-1])
+            offset -= 1  # An offset of 0 brings us to the index for Ax-
+        else:
+            logging.error(f"Unrecognized grade pattern {self.grade}")
+
+        return number_grade * 3 + offset
+
+
 class Danger(Grade):
     def index(self):
         return ["PG13", "R", "X"].index(self.grade)
