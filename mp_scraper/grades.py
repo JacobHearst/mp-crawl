@@ -2,13 +2,14 @@ import logging
 import re
 
 
-class YDS:
+class Grade:
+    def __init__(self, grade):
+        self.grade = grade
+
+class YDS(Grade):
     static_indexes = ["3rd", "4th", "Easy 5th"]
     single_digit_mplier = 3
     double_digit_mplier = 7
-
-    def __init__(self, grade):
-        self.grade = grade
 
     def index(self):
         """ Get the sorting index for a YDS grade
@@ -70,10 +71,7 @@ class YDS:
         return index
 
 
-class Hueco:
-    def __init__(self, grade):
-        self.grade = grade
-
+class Hueco(Grade):
     def index(self):
         """Get the sorting index for a Hueco grade
 
@@ -96,7 +94,6 @@ class Hueco:
             number_grade = int(v_grade)
         elif re.match(r"\d+-\d+", v_grade) is not None:
             # Vx-y
-            print("Match")
             number_grade = int(re.match(r"(\d+)-\d+", v_grade)[1])
             offset += 1 # An offset of 2 brings us to the index for Vx+
         elif "+" in v_grade:
@@ -111,3 +108,39 @@ class Hueco:
             logging.error(f"Unrecognized grade pattern {self.grade}")
 
         return number_grade * 3 + offset + 1 # Add 1 to account for VB/V-easy
+
+class Ice(Grade):
+    def index(self):
+        """Get the sorting index for an Ice climbing grade
+        Indexing goes from WI1-WI8
+        Each grade is defined as having 3 potential values ordered as follows: WIx-, WIx, WIx+
+        WIx-y grades are treated as equal to WIx+ 
+        AIx grades are treated as equal to WIx
+        """
+
+        # Remove the 'WI'/'AI' prefix
+        ice_grade = self.grade[2:]
+
+        number_grade = None
+        offset = 1  # An offset of 1 brings us to the index for Ix
+
+        if all(char.isdigit() for char in ice_grade):
+            # Ix
+            number_grade = int(ice_grade)
+        elif re.match(r"\d+-\d+", ice_grade) is not None:
+            # Ix-y
+            number_grade = int(re.match(r"(\d+)-\d+", ice_grade)[1])
+            offset += 1 # An offset of 2 brings us to the index for Ix+
+        elif "+" in ice_grade:
+            # Ix+
+            number_grade = int(ice_grade[:-1])
+            offset += 1
+        elif "-" in ice_grade:
+            # Ix-
+            number_grade = int(ice_grade[:-1])
+            offset -= 1  # An offset of 0 brings us to the index for Ix-
+        else:
+            logging.error(f"Unrecognized grade pattern {self.grade}")
+
+        # Subtract 1 from the grade so that the range is 0-8 instead of 1-8
+        return (number_grade - 1) * 3 + offset

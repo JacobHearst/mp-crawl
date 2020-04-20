@@ -1,4 +1,4 @@
-from mp_scraper.grades import YDS, Hueco
+from mp_scraper.grades import YDS, Hueco, Ice
 import unittest
 
 
@@ -48,6 +48,19 @@ class TestGrades(unittest.TestCase):
             ["V17", 53],
             ["V17+", 54]
         ], Hueco)
+
+    def test_ice(self):
+        self.run_test_matrix([
+            ["WI1", 1],
+            ["WI2", 4],
+            ["WI3-4", 8],
+            ["WI5+", 14],
+            ["WI2-", 3],
+            ["AI1", 1],
+            ["AI4-", 9],
+            ["AI2+", 5],
+            ["AI1-", 0],
+        ], Ice)
 
 
 if __name__ == "__main__":
