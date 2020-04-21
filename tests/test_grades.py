@@ -1,4 +1,4 @@
-from mp_scraper.grades import YDS, Hueco, Ice, Danger, Aid
+from mp_scraper.grades import YDS, Hueco, Ice, Aid, Mixed
 import unittest
 
 
@@ -74,6 +74,15 @@ class TestGrades(unittest.TestCase):
             ["C2+", 8],
             ["C1-", 3],
         ], Aid)
+
+    def test_mixed(self):
+        self.run_test_matrix([
+            ["M1-", 0],
+            ["M2-3", 5],
+            ["M9-10", 26],
+            ["M8", 22],
+            ["M7-", 18]
+        ], Mixed)
 
 
 if __name__ == "__main__":

@@ -247,7 +247,7 @@ expected_items = {
             rating=4,
             link="https://www.mountainproject.com/route/109513995/invisible-touch",
             grades={
-                "v": "V8"
+                "hueco": "V8"
             }
         ),
         "planet-of-the-apes": Route(
@@ -259,7 +259,7 @@ expected_items = {
             rating=3.8,
             link="https://www.mountainproject.com/route/106318953/planet-of-the-apes",
             grades={
-                "v": "V7-"
+                "hueco": "V7-"
             }
         ),
         "the-red-house-extension": Route(
@@ -271,7 +271,7 @@ expected_items = {
             rating=3.5,
             link="https://www.mountainproject.com/route/108027966/the-red-house-extension",
             grades={
-                "v": "V7+"
+                "hueco": "V7+"
             }
         ),
         "feels-like-grit": Route(
@@ -283,7 +283,7 @@ expected_items = {
             rating=3.2,
             link="https://www.mountainproject.com/route/105938571/feels-like-grit",
             grades={
-                "v": "V6-7"
+                "hueco": "V6-7"
             }
         ),
         "black-dike": Route(
@@ -299,7 +299,7 @@ expected_items = {
             grades={
                 "yds": "5.6",
                 "ice": "WI4-5",
-                "m": "M3"
+                "mixed": "M3"
             }
         ),
         "ames-ice-hose": Route(
@@ -315,7 +315,7 @@ expected_items = {
             grades={
                 "ice": "WI5",
                 "danger": "R",
-                "m": "M6",
+                "mixed": "M6",
             }
         ),
         "cosmiques-arete": Route(
@@ -331,7 +331,7 @@ expected_items = {
             grades={
                 "yds": "5.6",
                 "ice": "AI2",
-                "m": "M4",
+                "mixed": "M4",
                 "snow": "Mod. Snow",
             }
         ),
@@ -346,7 +346,7 @@ expected_items = {
             link="https://www.mountainproject.com/route/105747482/skylight",
             grades={
                 "ice": "WI4+",
-                "m": "M4-5",
+                "mixed": "M4-5",
             }
         ),
         "rock": Route(
@@ -358,7 +358,7 @@ expected_items = {
             rating=1.0,
             link="https://www.mountainproject.com/route/107350537/rock",
             grades={
-                "v": "V-easy"
+                "hueco": "V-easy"
             }
         )
     }

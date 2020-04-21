@@ -144,7 +144,7 @@ class Ice(Grade):
         else:
             logging.error(f"Unrecognized grade pattern {self.grade}")
 
-        # Subtract 1 from the grade so that the range is 0-8 instead of 1-8
+        # Subtract 1 from the grade so that the range is 0-7 instead of 1-8
         return (number_grade - 1) * 3 + offset
 
 
@@ -177,6 +177,47 @@ class Aid(Grade):
             logging.error(f"Unrecognized grade pattern {self.grade}")
 
         return number_grade * 3 + offset
+
+
+class Mixed(Grade):
+    def index(self):
+        """Get the sorting index for an Ice climbing grade
+        Indexing goes from M1-M9
+        Each grade is defined as having 3 potential values ordered as follows: Mx-, Mx, Mx+
+        Mx-y grades are treated as equal to Mx+
+        """
+
+        # Remove the 'M' prefix
+        mixed_grade = self.grade[1:]
+
+        number_grade = None
+        offset = 1  # An offset of 1 brings us to the index for Mx
+
+        if all(char.isdigit() for char in mixed_grade):
+            # Mx
+            number_grade = int(mixed_grade)
+        elif re.match(r"\d+-\d+", mixed_grade) is not None:
+            # Mx-y
+            number_grade = int(re.match(r"(\d+)-\d+", mixed_grade)[1])
+            offset += 1  # An offset of 2 brings us to the index for Mx+
+        elif "+" in mixed_grade:
+            # Mx+
+            number_grade = int(mixed_grade[:-1])
+            offset += 1
+        elif "-" in mixed_grade:
+            # Mx-
+            number_grade = int(mixed_grade[:-1])
+            offset -= 1  # An offset of 0 brings us to the index for Mx-
+        else:
+            logging.error(f"Unrecognized grade pattern {self.grade}")
+
+        # Subtract 1 from the grade so that the range is 0-9 instead of 1-10
+        return (number_grade - 1) * 3 + offset
+
+
+class Snow(Grade):
+    def index(self):
+        return ["Easy Snow", "Mod. Snow", "Steep Snow"].index(self.grade)
 
 
 class Danger(Grade):

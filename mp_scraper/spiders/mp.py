@@ -187,8 +187,8 @@ class MpSpider(CrawlSpider):
             "ice": grade_info.re_first(r"[WA]I\d(?:-\d)?[\+-]?"),
             "danger": grade_info.re_first(r" (R|X|PG13)"),
             "aid": grade_info.re_first(r"[CA]\d\+?"),
-            "m": grade_info.re_first(r"M[\d-]+"),
-            "v": grade_info.re_first(r"V[\dB-]+[\+-]?\d*(?:easy)?"),
+            "mixed": grade_info.re_first(r"M[\d-]+"),
+            "hueco": grade_info.re_first(r"V[\dB-]+[\+-]?\d*(?:easy)?"),
             "snow": grade_info.re_first(r"\w+\.? ?Snow")
         }
 
