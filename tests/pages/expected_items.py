@@ -152,7 +152,7 @@ expected_items = {
             length="II",
             height=500,
             grades={
-                "snow": "Mod. Snow"
+                "snow": { "grade": "Mod. Snow", "sort_index": 1 }
             }
         ),
         "liberty-ridge": Route(
@@ -165,8 +165,8 @@ expected_items = {
             length="IV",
             height=10500,
             grades={
-                "ice": "AI2-3",
-                "snow": "Steep Snow"
+                "ice": { "grade": "AI2-3", "sort_index": 5 },
+                "snow": { "grade": "Steep Snow", "sort_index": 2 }
             }
         ),
         "upper-exum-ridge": Route(
@@ -180,7 +180,7 @@ expected_items = {
             height=1700,
             pitches=12,
             grades={
-                "yds": "5.5"
+                "yds": { "grade": "5.5", "sort_index": 19 }
             }
         ),
         "the-moonlight-buttress-free": Route(
@@ -193,7 +193,7 @@ expected_items = {
             height=1200,
             pitches=10,
             grades={
-                "yds": "5.12c"
+                "yds": { "grade": "5.12c", "sort_index": 51 }
             }
         ),
         "the-original-route": Route(
@@ -206,7 +206,7 @@ expected_items = {
             height=1000,
             pitches=14,
             grades={
-                "yds": "5.12-",
+                "yds": { "grade": "5.12-", "sort_index": 48 },
             }
         ),
         "regular-northwest-face-of-half-dome": Route(
@@ -220,8 +220,8 @@ expected_items = {
             length="VI",
             pitches=23,
             grades={
-                "yds": "5.9",
-                "aid": "C1",
+                "yds": { "grade": "5.9", "sort_index": 31 },
+                "aid": { "grade": "C1", "sort_index": 4 },
             }
         ),
         "moby-grape": Route(
@@ -235,8 +235,8 @@ expected_items = {
             length="III",
             pitches=7,
             grades={
-                "yds": "5.8",
-                "danger": "PG13",
+                "yds": { "grade": "5.8", "sort_index": 28 },
+                "danger": { "grade": "PG13", "sort_index": 0 },
             }
         ),
         "invisible-touch": Route(
@@ -247,7 +247,7 @@ expected_items = {
             rating=4,
             link="https://www.mountainproject.com/route/109513995/invisible-touch",
             grades={
-                "hueco": "V8"
+                "hueco": { "grade": "V8", "sort_index": 26 }
             }
         ),
         "planet-of-the-apes": Route(
@@ -259,7 +259,7 @@ expected_items = {
             rating=3.8,
             link="https://www.mountainproject.com/route/106318953/planet-of-the-apes",
             grades={
-                "hueco": "V7-"
+                "hueco": { "grade": "V7-", "sort_index": 22 }
             }
         ),
         "the-red-house-extension": Route(
@@ -271,7 +271,7 @@ expected_items = {
             rating=3.5,
             link="https://www.mountainproject.com/route/108027966/the-red-house-extension",
             grades={
-                "hueco": "V7+"
+                "hueco": { "grade": "V7+", "sort_index": 24 }
             }
         ),
         "feels-like-grit": Route(
@@ -283,7 +283,7 @@ expected_items = {
             rating=3.2,
             link="https://www.mountainproject.com/route/105938571/feels-like-grit",
             grades={
-                "hueco": "V6-7"
+                "hueco": { "grade": "V6-7", "sort_index": 21 }
             }
         ),
         "black-dike": Route(
@@ -297,9 +297,9 @@ expected_items = {
             rating=3.9,
             link="https://www.mountainproject.com/route/105890633/black-dike",
             grades={
-                "yds": "5.6",
-                "ice": "WI4-5",
-                "mixed": "M3"
+                "yds": { "grade": "5.6", "sort_index": 22 },
+                "ice": { "grade": "WI4-5", "sort_index": 11 },
+                "mixed": { "grade": "M3", "sort_index": 7 }
             }
         ),
         "ames-ice-hose": Route(
@@ -313,9 +313,9 @@ expected_items = {
             rating=4.0,
             link="https://www.mountainproject.com/route/105747549/ames-ice-hose",
             grades={
-                "ice": "WI5",
-                "danger": "R",
-                "mixed": "M6",
+                "ice": { "grade": "WI5", "sort_index": 13 },
+                "danger": { "grade": "R", "sort_index": 1 },
+                "mixed": { "grade": "M6", "sort_index": 16 },
             }
         ),
         "cosmiques-arete": Route(
@@ -329,10 +329,10 @@ expected_items = {
             rating=3.8,
             link="https://www.mountainproject.com/route/107497087/cosmiques-arete",
             grades={
-                "yds": "5.6",
-                "ice": "AI2",
-                "mixed": "M4",
-                "snow": "Mod. Snow",
+                "yds": { "grade": "5.6", "sort_index": 22 },
+                "ice": { "grade": "AI2", "sort_index": 4 },
+                "mixed": { "grade": "M4", "sort_index": 10 },
+                "snow": { "grade": "Mod. Snow", "sort_index": 1 },
             }
         ),
         "skylight": Route(
@@ -345,8 +345,8 @@ expected_items = {
             rating=3.8,
             link="https://www.mountainproject.com/route/105747482/skylight",
             grades={
-                "ice": "WI4+",
-                "mixed": "M4-5",
+                "ice": { "grade": "WI4+", "sort_index": 11 },
+                "mixed": { "grade": "M4-5", "sort_index": 11 },
             }
         ),
         "rock": Route(
@@ -358,7 +358,7 @@ expected_items = {
             rating=1.0,
             link="https://www.mountainproject.com/route/107350537/rock",
             grades={
-                "hueco": "V-easy"
+                "hueco": { "grade": "V-easy", "sort_index": 0 }
             }
         )
     }

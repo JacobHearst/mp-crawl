@@ -6,6 +6,12 @@ class Grade:
     def __init__(self, grade):
         self.grade = grade
 
+    def to_dict(self):
+        return { "grade": self.grade, "sort_index": self.index() }
+
+    def index(self):
+        pass
+
 
 class YDS(Grade):
     static_indexes = ["3rd", "4th", "Easy 5th"]
@@ -30,6 +36,7 @@ class YDS(Grade):
 
         if len(fifth_grade) == 1:
             # 5.x case
+            # Add an offset of 1 to get to 5.x
             index += int(fifth_grade) * self.single_digit_mplier + 1
         elif not fifth_grade[1].isdigit():
             # 5.x +/- case
