@@ -3,6 +3,7 @@ import calendar
 import json
 import logging
 from mp_scraper.items import Area, Route, MpItemLoader
+from mp_scraper.grades import YDS, Aid, Danger, Hueco, Ice, Mixed, Snow
 import re
 import scrapy
 from scrapy.linkextractors import LinkExtractor
@@ -183,13 +184,13 @@ class MpSpider(CrawlSpider):
         grade_info = response.css("div.col-md-9 > h2")
 
         grades = {
-            "yds": grade_info.re_first(r"(5\.[\d\w\+\-\?/]{1,5}|3rd|4th|Easy 5th)"),
-            "ice": grade_info.re_first(r"[WA]I\d(?:-\d)?[\+-]?"),
-            "danger": grade_info.re_first(r" (R|X|PG13)"),
-            "aid": grade_info.re_first(r"[CA]\d\+?"),
-            "m": grade_info.re_first(r"M[\d-]+"),
-            "v": grade_info.re_first(r"V[\dB-]+[\+-]?\d*(?:easy)?"),
-            "snow": grade_info.re_first(r"\w+\.? ?Snow")
+            "yds": YDS(grade_info.re_first(r"(5\.[\d\w\+\-\?/]{1,5}|3rd|4th|Easy 5th)")),
+            "ice": Ice(grade_info.re_first(r"[WA]I\d(?:-\d)?[\+-]?")),
+            "danger": Danger(grade_info.re_first(r" (R|X|PG13)")),
+            "aid": Aid(grade_info.re_first(r"[CA]\d\+?")),
+            "mixed": Mixed(grade_info.re_first(r"M[\d-]+")),
+            "hueco": Hueco(grade_info.re_first(r"V[\dB-]+[\+-]?\d*(?:easy)?")),
+            "snow": Snow(grade_info.re_first(r"\w+\.? ?Snow"))
         }
 
-        return {k: v for k, v in grades.items() if v is not None}
+        return {k: v.to_dict() for k, v in grades.items() if v.grade is not None}
