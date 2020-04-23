@@ -5,6 +5,7 @@ from scrapy.loader import ItemLoader
 
 to_int = Compose(TakeFirst(), int)
 to_float = Compose(TakeFirst(), float)
+strip = Compose(TakeFirst(), lambda value: value.strip())
 
 
 class MpItemLoader(ItemLoader):
@@ -14,7 +15,7 @@ class MpItemLoader(ItemLoader):
 class Area(scrapy.Item):
     _id = scrapy.Field()
     parent_id = scrapy.Field()
-    name = scrapy.Field()
+    name = scrapy.Field(input_processor=strip)
     latitude = scrapy.Field(input_processor=to_float)
     longitude = scrapy.Field(input_processor=to_float)
     elevation = scrapy.Field(input_processor=Join(""), output_processor=to_int)
@@ -27,7 +28,7 @@ class Area(scrapy.Item):
 class Route(scrapy.Item):
     _id = scrapy.Field()
     parent_id = scrapy.Field()
-    name = scrapy.Field()
+    name = scrapy.Field(input_processor=strip)
     types = scrapy.Field(output_processor=Identity())
     rating = scrapy.Field(input_processor=to_float)
     link = scrapy.Field()
