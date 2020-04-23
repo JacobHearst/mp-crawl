@@ -40,7 +40,7 @@ expected_items = {
         ),
         "three-oclock-rock": Area(
             _id=108543607,
-            parent_id=106006698,
+            ancestors=[105708966, 108471385, 106006698],
             name="Three O'clock Rock",
             link="https://www.mountainproject.com/area/108543607/three-oclock-rock",
             latitude=48.159,
@@ -91,7 +91,7 @@ expected_items = {
         ),
         "ooh-la-la": Area(
             _id=105746817,
-            parent_id=105802014,
+            ancestors=[105708956, 105744466, 105802014],
             name="\"Ooh La La!\"",
             link="https://www.mountainproject.com/area/105746817/ooh-la-la",
             latitude=40.162,
@@ -144,7 +144,7 @@ expected_items = {
     "routes": {
         "ooh-la-la-express": Route(
             _id=105764061,
-            parent_id=105746817,
+            ancestors=[105708956, 105744466, 105802014, 105746817],
             name="Ooh La La Express",
             types=["Trad", "Snow", "Alpine"],
             rating=2,
@@ -157,7 +157,7 @@ expected_items = {
         ),
         "liberty-ridge": Route(
             _id=106459197,
-            parent_id=105877031,
+            ancestors=[105708966, 108471329, 105877031],
             name="Liberty Ridge",
             types=["Ice", "Snow", "Alpine"],
             rating=3.8,
@@ -171,7 +171,7 @@ expected_items = {
         ),
         "upper-exum-ridge": Route(
             _id=105933562,
-            parent_id=105803123,
+            ancestors=[105708960, 105802912, 105803123],
             name="Upper Exum Ridge",
             types=["Trad", "Alpine"],
             rating=3.6,
@@ -185,7 +185,7 @@ expected_items = {
         ),
         "the-moonlight-buttress-free": Route(
             _id=106138026,
-            parent_id=105717003,
+            ancestors=[105708957, 105716799, 105717003],
             name="The Moonlight Buttress (Free)",
             types=["Trad"],
             rating=3.9,
@@ -198,7 +198,7 @@ expected_items = {
         ),
         "the-original-route": Route(
             _id=105732410,
-            parent_id=105732183,
+            ancestors=[105708961, 113755154, 105731932, 105731974, 105732183],
             name="The Original Route",
             types=["Trad"],
             rating=4,
@@ -211,7 +211,14 @@ expected_items = {
         ),
         "regular-northwest-face-of-half-dome": Route(
             _id=105912416,
-            parent_id=114557650,
+            ancestors=[
+                105708959,
+                105833381,
+                105833388,
+                118097922,
+                105833395,
+                114557650
+            ],
             name="Regular Northwest Face of Half Dome",
             types=["Trad", "Aid"],
             rating=3.9,
@@ -226,7 +233,7 @@ expected_items = {
         ),
         "moby-grape": Route(
             _id=105884815,
-            parent_id=107340355,
+            ancestors=[105872225, 107340274, 107340355],
             name="Moby Grape",
             types=["Trad", "Alpine"],
             rating=3.8,
@@ -241,7 +248,7 @@ expected_items = {
         ),
         "invisible-touch": Route(
             _id=109513995,
-            parent_id=109255860,
+            ancestors=[105812481, 109253227, 110040864, 109255860],
             name="Invisible Touch",
             types=["Boulder"],
             rating=4,
@@ -252,7 +259,7 @@ expected_items = {
         ),
         "planet-of-the-apes": Route(
             _id=106318953,
-            parent_id=105880707,
+            ancestors=[105708957, 105880382, 105880388, 105880707],
             name="Planet of the Apes",
             types=["Boulder"],
             height=12,
@@ -264,7 +271,7 @@ expected_items = {
         ),
         "the-red-house-extension": Route(
             _id=108027966,
-            parent_id=106031921,
+            ancestors=[105887760, 106031921],
             name="The Red House Extension",
             types=["Boulder"],
             height=15,
@@ -276,7 +283,7 @@ expected_items = {
         ),
         "feels-like-grit": Route(
             _id=105938571,
-            parent_id=105880408,
+            ancestors=[105708957, 105880382, 105880391, 105880408],
             name="Feels Like Grit",
             types=["Boulder"],
             height=15,
@@ -288,7 +295,7 @@ expected_items = {
         ),
         "black-dike": Route(
             _id=105890633,
-            parent_id=106099665,
+            ancestors=[105872225, 106099658, 114088875, 106099665],
             name="Black Dike",
             types=["Mixed", "Ice"],
             height=500,
@@ -304,7 +311,7 @@ expected_items = {
         ),
         "ames-ice-hose": Route(
             _id=105747549,
-            parent_id=105747000,
+            ancestors=[105708956, 105807296, 105744518, 105747000],
             name="Ames Ice Hose",
             types=["Trad", "Mixed", "Ice"],
             height=520,
@@ -320,7 +327,14 @@ expected_items = {
         ),
         "cosmiques-arete": Route(
             _id=107497087,
-            parent_id=110824971,
+            ancestors=[
+                105907743,
+                106660030,
+                106192575,
+                110824749,
+                110824830,
+                110824971
+            ],
             name="Cosmiques Arête",
             types=["Trad", "Mixed", "Ice", "Snow", "Alpine"],
             height=1000,
@@ -337,7 +351,7 @@ expected_items = {
         ),
         "skylight": Route(
             _id=105747482,
-            parent_id=105746985,
+            ancestors=[105708956, 105807296, 105744521, 105746985],
             name="Skylight",
             types=["Trad", "Mixed", "Ice"],
             pitches=3,
@@ -351,7 +365,14 @@ expected_items = {
         ),
         "rock": Route(
             _id=107350537,
-            parent_id=107282156,
+            ancestors=[
+                105852400,
+                110848199,
+                106477419,
+                107281942,
+                107281993,
+                107282156
+            ],
             name="Rock",
             types=["Boulder"],
             height=8,
