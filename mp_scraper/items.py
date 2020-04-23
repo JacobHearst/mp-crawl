@@ -14,7 +14,7 @@ class MpItemLoader(ItemLoader):
 
 class Area(scrapy.Item):
     _id = scrapy.Field()
-    parent_id = scrapy.Field()
+    ancestors = scrapy.Field(output_processor=Identity())
     name = scrapy.Field(input_processor=strip)
     latitude = scrapy.Field(input_processor=to_float)
     longitude = scrapy.Field(input_processor=to_float)
@@ -27,7 +27,7 @@ class Area(scrapy.Item):
 
 class Route(scrapy.Item):
     _id = scrapy.Field()
-    parent_id = scrapy.Field()
+    ancestors = scrapy.Field(output_processor=Identity())
     name = scrapy.Field(input_processor=strip)
     types = scrapy.Field(output_processor=Identity())
     rating = scrapy.Field(input_processor=to_float)
