@@ -10,15 +10,9 @@ API. The ultimate goal of this project is to allow 3rd party developers to provi
   1. Clone the repository
   2. Navigate to your cloned repository
   3. Run `pip install -r requirements.txt`
-  4. (Optional) Create a file called creds.py in the project root and enter the following with your details substituted
-  
-    URI="<YOUR_MONGO_URI>"
-    DATABASE="<YOUR_MONGO_DATABASE_NAME>"
 
 ## Usage
-The spider can be started with: `scrapy crawl mp`
-
-Alternatively if you didn't perform step 4, use:
+The spider can be started with:
 
 `scrapy crawl mp -s MONGO_URI=<YOUR_MONGO_URI> -s MONGO_DATABASE=<YOUR_MONGO_DATABASE_NAME>`
 
