@@ -5,8 +5,7 @@ expected_items = {
         "north-dakota": Area(
             _id=106598130,
             name="North Dakota",
-            latitude=47.14,
-            longitude=-100.433,
+            coords=[47.14, -100.433],
             elevation=1000,
             link="https://www.mountainproject.com/area/106598130/north-dakota",
             temp_avgs=[
@@ -43,8 +42,7 @@ expected_items = {
             ancestors=[105708966, 108471385, 106006698],
             name="Three O'clock Rock",
             link="https://www.mountainproject.com/area/108543607/three-oclock-rock",
-            latitude=48.159,
-            longitude=-121.617,
+            coords=[48.159, -121.617],
             elevation=2652,
             temp_avgs=[
                 {"month": 1, "avg_high": 41, "avg_low": 28},
@@ -94,8 +92,7 @@ expected_items = {
             ancestors=[105708956, 105744466, 105802014],
             name="\"Ooh La La!\"",
             link="https://www.mountainproject.com/area/105746817/ooh-la-la",
-            latitude=40.162,
-            longitude=-105.668,
+            coords=[40.162, -105.668],
             elevation=12945,
             temp_avgs=[
                 {"month": 1, "avg_low": 3, "avg_high": 38},

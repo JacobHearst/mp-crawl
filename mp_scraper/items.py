@@ -5,6 +5,7 @@ from scrapy.loader import ItemLoader
 
 to_int = Compose(TakeFirst(), int)
 to_float = Compose(TakeFirst(), float)
+iter_to_float = lambda iter: [float(val) for val in iter]
 strip = Compose(TakeFirst(), lambda value: value.strip())
 
 
@@ -16,8 +17,7 @@ class Area(scrapy.Item):
     _id = scrapy.Field()
     ancestors = scrapy.Field(output_processor=Identity())
     name = scrapy.Field(input_processor=strip)
-    latitude = scrapy.Field(input_processor=to_float)
-    longitude = scrapy.Field(input_processor=to_float)
+    coords = scrapy.Field(input_processor=iter_to_float, output_processor=Identity())
     elevation = scrapy.Field(input_processor=Join(""), output_processor=to_int)
     link = scrapy.Field()
     temp_avgs = scrapy.Field(output_processor=Identity())
