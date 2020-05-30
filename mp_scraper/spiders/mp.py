@@ -45,9 +45,8 @@ class MpSpider(CrawlSpider):
 
         details_css = "table.description-details td::text"
         coords = response.css(details_css).re(
-            r"(-?\d+(?:\.\d+)?),\s(-?\d+(?:\.\d+)?)")
-        area_loader.add_value("latitude", coords[0])
-        area_loader.add_value("longitude", coords[1])
+            r"(-?\d+(?:\.\d+)?),\s(-?\d+(?:\.\d+)?)")[:2]
+        area_loader.add_value("coords", coords)
         area_loader.add_css("elevation", details_css, re=r"(\d+),?(\d+) ft")
 
         area_loader.add_value(
