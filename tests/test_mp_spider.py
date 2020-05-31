@@ -40,23 +40,23 @@ class TestMpSpider(unittest.TestCase):
 
         spider.extract_monthly_data = MagicMock(return_value=data)
 
-        expected = [
-            {"month": 1, "avg_low": 1, "avg_high": 2},
-            {"month": 2, "avg_low": 3, "avg_high": 4},
-            {"month": 3, "avg_low": 5, "avg_high": 6},
-            {"month": 4, "avg_low": 7, "avg_high": 8},
-            {"month": 5, "avg_low": 9, "avg_high": 10},
-            {"month": 6, "avg_low": 11, "avg_high": 12},
-            {"month": 7, "avg_low": 13, "avg_high": 14},
-            {"month": 8, "avg_low": 15, "avg_high": 16},
-            {"month": 9, "avg_low": 17, "avg_high": 18},
-            {"month": 10, "avg_low": 19, "avg_high": 20},
-            {"month": 11, "avg_low": 21, "avg_high": 22},
-            {"month": 12, "avg_low": 23, "avg_high": 24}
-        ]
+        expected = {
+            "1": { "avg_low": 1, "avg_high": 2},
+            "2": { "avg_low": 3, "avg_high": 4},
+            "3": { "avg_low": 5, "avg_high": 6},
+            "4": { "avg_low": 7, "avg_high": 8},
+            "5": { "avg_low": 9, "avg_high": 10},
+            "6": { "avg_low": 11, "avg_high": 12},
+            "7": { "avg_low": 13, "avg_high": 14},
+            "8": { "avg_low": 15, "avg_high": 16},
+            "9": { "avg_low": 17, "avg_high": 18},
+            "10": { "avg_low": 19, "avg_high": 20},
+            "11": { "avg_low": 21, "avg_high": 22},
+            "12": { "avg_low": 23, "avg_high": 24}
+        }
 
         result = spider.extract_monthly_avg(None, "dataPrecip")
-        compare_item_iter(self, expected, result)
+        self.assertDictEqual(expected, result)
 
     def test_extract_temps(self):
         spider = MpSpider()
@@ -77,23 +77,23 @@ class TestMpSpider(unittest.TestCase):
 
         spider.extract_monthly_data = MagicMock(return_value=data)
 
-        expected = [
-            {"month": 1, "avg_low": 1, "avg_high": 2},
-            {"month": 2, "avg_low": 3, "avg_high": 4},
-            {"month": 3, "avg_low": 5, "avg_high": 6},
-            {"month": 4, "avg_low": 7, "avg_high": 8},
-            {"month": 5, "avg_low": 9, "avg_high": 10},
-            {"month": 6, "avg_low": 11, "avg_high": 12},
-            {"month": 7, "avg_low": 13, "avg_high": 14},
-            {"month": 8, "avg_low": 15, "avg_high": 16},
-            {"month": 9, "avg_low": 17, "avg_high": 18},
-            {"month": 10, "avg_low": 19, "avg_high": 20},
-            {"month": 11, "avg_low": 21, "avg_high": 22},
-            {"month": 12, "avg_low": 23, "avg_high": 24}
-        ]
+        expected = {
+            "1": { "avg_low": 1, "avg_high": 2},
+            "2": { "avg_low": 3, "avg_high": 4},
+            "3": { "avg_low": 5, "avg_high": 6},
+            "4": { "avg_low": 7, "avg_high": 8},
+            "5": { "avg_low": 9, "avg_high": 10},
+            "6": { "avg_low": 11, "avg_high": 12},
+            "7": { "avg_low": 13, "avg_high": 14},
+            "8": { "avg_low": 15, "avg_high": 16},
+            "9": { "avg_low": 17, "avg_high": 18},
+            "10": { "avg_low": 19, "avg_high": 20},
+            "11": { "avg_low": 21, "avg_high": 22},
+            "12": { "avg_low": 23, "avg_high": 24}
+        }
 
         result = spider.extract_monthly_avg(None, "dataTemps")
-        compare_item_iter(self, expected, result)
+        self.assertDictEqual(expected, result)
 
     def test_extract_climb_season(self):
         spider = MpSpider()
@@ -114,23 +114,23 @@ class TestMpSpider(unittest.TestCase):
 
         spider.extract_monthly_data = MagicMock(return_value=data)
 
-        expected = [
-            {"month": 10, "popularity": 19},
-            {"month": 3, "popularity": 5},
-            {"month": 4, "popularity": 7},
-            {"month": 7, "popularity": 13},
-            {"month": 1, "popularity": 1},
-            {"month": 6, "popularity": 11},
-            {"month": 2, "popularity": 3},
-            {"month": 12, "popularity": 23},
-            {"month": 5, "popularity": 9},
-            {"month": 8, "popularity": 15},
-            {"month": 11, "popularity": 21},
-            {"month": 9, "popularity": 17}
-        ]
+        expected = {
+            "10": 19,
+            "3": 5,
+            "4": 7,
+            "7": 13,
+            "1": 1,
+            "6": 11,
+            "2": 3,
+            "12": 23,
+            "5": 9,
+            "8": 15,
+            "11": 21,
+            "9": 17,
+        }
 
         result = spider.extract_climb_season(None)
-        compare_item_iter(self, expected, result)
+        self.assertDictEqual(expected, result)
 
     def test_empty_monthly_vals(self):
         spider = MpSpider()
@@ -140,9 +140,24 @@ class TestMpSpider(unittest.TestCase):
         precip = spider.extract_monthly_avg(None, "dataPrecip")
         climb_season = spider.extract_climb_season(None)
 
-        self.assertEqual([], temps)
-        self.assertEqual([], precip)
-        self.assertEqual([], climb_season)
+        self.assertEqual({}, temps)
+        self.assertEqual({}, precip)
+        self.assertEqual({}, climb_season)
+
+    def test_to_number(self):
+        spider = MpSpider()
+        
+        cases = [
+            ('1', 1),
+            ('3.798565', 3.798565),
+            ('5.0', 5),
+            ('39', 39)
+        ]
+
+        for case in cases:
+            with self.subTest(case=case):
+                result = spider.to_number(case[0])
+                self.assertEqual(result, case[1])
 
 
 if __name__ == "__main__":
