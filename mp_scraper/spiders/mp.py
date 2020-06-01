@@ -44,8 +44,12 @@ class MpSpider(CrawlSpider):
                             re=r"(?<=[Climbing|Bouldering] in )(.+?)(?:,|$)")
 
         details_css = "table.description-details td::text"
-        coords = response.css(details_css).re(
+        raw_coords = response.css(details_css).re(
             r"(-?\d+(?:\.\d+)?),\s(-?\d+(?:\.\d+)?)")[:2]
+        coords = {
+            "type": "Point",
+            "coordinates": [float(val) for val in raw_coords][::-1]
+        }
         area_loader.add_value("coords", coords)
         area_loader.add_css("elevation", details_css, re=r"(\d+),?(\d+) ft")
 
@@ -141,16 +145,17 @@ class MpSpider(CrawlSpider):
         """
         monthly_avg_vals = self.extract_monthly_data(response, var_name)
 
-        if len(monthly_avg_vals) > 0:
-            return [
-                {
-                    "month": self.months[val[0]],
-                    "avg_low": float(min(val[1], val[2])),
-                    "avg_high": float(max(val[1], val[2]))
-                } for val in monthly_avg_vals if len(val) > 0]
+        if len(monthly_avg_vals) > 0 and len(monthly_avg_vals[0]) > 0:
+            return {
+                str(self.months[val[0]]): {
+                    "avg_low": self.to_number(min(val[1], val[2])),
+                    "avg_high": self.to_number(max(val[1], val[2]))
+                }
+                for val in monthly_avg_vals if len(val) > 0
+            }
 
         # No temp/precip data for the given area
-        return []
+        return {}
 
     def extract_climb_season(self, response):
         """Extract the climbing season data for an area
@@ -164,15 +169,14 @@ class MpSpider(CrawlSpider):
         climb_season_vals = self.extract_monthly_data(
             response, "dataClimbSeason")
 
-        if len(climb_season_vals) > 0:
-            return [
-                {
-                    "month": int(self.months[val[0]]),
-                    "popularity": float(val[1])
-                } for val in climb_season_vals if len(val) > 0]
+        if len(climb_season_vals) > 0 and len(climb_season_vals[0]) > 0:
+            return {
+                str(self.months[val[0]]): self.to_number(val[1])
+                for val in climb_season_vals if len(val) > 0
+            }
 
         # No climb season data for the given area
-        return []
+        return {}
 
     def extract_grades(self, response):
         """Extract grade data from the page and return a dict containing the non-null grades
@@ -196,3 +200,15 @@ class MpSpider(CrawlSpider):
         }
 
         return {k: v.to_dict() for k, v in grades.items() if v.grade is not None}
+
+    def to_number(self, inputStr):
+        """Convert string to proper data type (either int or float)
+
+        Arguments:
+            inputStr {string} -- The string to convert
+
+        Returns:
+            float | int -- The converted value
+        """        
+        fl = float(inputStr)
+        return fl if fl % 1 != 0 else int(fl)

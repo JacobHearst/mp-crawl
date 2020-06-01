@@ -17,12 +17,12 @@ class Area(scrapy.Item):
     _id = scrapy.Field()
     ancestors = scrapy.Field(output_processor=Identity())
     name = scrapy.Field(input_processor=strip)
-    coords = scrapy.Field(input_processor=iter_to_float, output_processor=Identity())
+    coords = scrapy.Field()
     elevation = scrapy.Field(input_processor=Join(""), output_processor=to_int)
     link = scrapy.Field()
-    temp_avgs = scrapy.Field(output_processor=Identity())
-    precip_avgs = scrapy.Field(output_processor=Identity())
-    climb_season = scrapy.Field(output_processor=Identity())
+    temp_avgs = scrapy.Field()
+    precip_avgs = scrapy.Field()
+    climb_season = scrapy.Field()
 
 
 class Route(scrapy.Item):
