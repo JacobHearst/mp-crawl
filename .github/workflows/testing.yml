@@ -27,9 +27,7 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Setup
-      uses: VaultVulp/action-pipenv@v2.0.1
-      with:
-        command: install -d
+      run: pip install pipenv && pipenv install
 
     - name: Test application
       run: python -m unittest
