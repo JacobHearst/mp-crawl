@@ -25,10 +25,11 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    # Install dependencies
+    # Runs a single command using the runners shell
     - name: Setup
-      run: pip install pipenv
-      run: pipenv install
+      uses: VaultVulp/action-pipenv@v2.0.1
+      with:
+        command: install -d
 
     - name: Test application
       run: python -m unittest
