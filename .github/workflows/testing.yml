@@ -18,7 +18,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Setup Python
-      uses: actions/setup-python@v1.2.0
+      uses: actions/setup-python@v2
       with:
         python-version: '3.7.x'
 
@@ -27,7 +27,9 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Setup
-      run: pip install pipenv && pipenv install
+      uses: VaultVulp/action-pipenv@v2.0.1
+      with:
+        command: install -d
 
     - name: Test application
       run: python -m unittest
