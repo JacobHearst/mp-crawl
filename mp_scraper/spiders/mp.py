@@ -39,18 +39,14 @@ class MpSpider(CrawlSpider):
 
         area_loader.add_value("link", response.url)
         area_loader.add_value("_id", id)
-        area_loader.add_value("ancestors", self.extract_ancestor_ids(response))
+        area_loader.add_value("parent_id", self.extract_parent_id(response))
         area_loader.add_css("name", "title::text",
                             re=r"(?<=[Climbing|Bouldering] in )(.+?)(?:,|$)")
 
         details_css = "table.description-details td::text"
         raw_coords = response.css(details_css).re(
             r"(-?\d+(?:\.\d+)?),\s(-?\d+(?:\.\d+)?)")[:2]
-        coords = {
-            "type": "Point",
-            "coordinates": [float(val) for val in raw_coords][::-1]
-        }
-        area_loader.add_value("coords", coords)
+        area_loader.add_value("coords", [float(val) for val in raw_coords][::-1])
         area_loader.add_css("elevation", details_css, re=r"(\d+),?(\d+) ft")
 
         area_loader.add_value(
@@ -76,7 +72,7 @@ class MpSpider(CrawlSpider):
 
         route_loader.add_value("link", response.url)
         route_loader.add_value("_id", id)
-        route_loader.add_value("ancestors", self.extract_ancestor_ids(response))
+        route_loader.add_value("parent_id", self.extract_parent_id(response))
         route_loader.add_css("name", "title::text",
                              re=r"(?<=Climb )(.+?)(?:,|$)")
         route_loader.add_css(
@@ -109,14 +105,9 @@ class MpSpider(CrawlSpider):
 
         return None
 
-    def extract_ancestor_ids(self, response):
-        parent_links = response.css(
-            "div.mb-half.small.text-warm a::attr(href)").extract()[1:]
-        
-        if len(parent_links) > 10:
-            logging.info(f"{response.url} has depth > 10")
-
-        return [self.extract_id(link) for link in parent_links]
+    def extract_parent_id(self, response):
+        parent_link = response.css("div.mb-half.small.text-warm a::attr(href)").extract()[-1]
+        return self.extract_id(parent_link)
 
     def extract_monthly_data(self, response, var_name):
         """Extract the JavaScript arrays containing monthly data

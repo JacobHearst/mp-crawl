@@ -25,7 +25,9 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Setup
-      run: pip install -r requirements.txt
+      uses: VaultVulp/action-pipenv@v2.0.1
+      with:
+        command: install -d
 
     - name: Test application
       run: python -m unittest

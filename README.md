@@ -3,8 +3,8 @@ This project is a web crawler built using [Scrapy](https://scrapy.org/) that aim
 API. The ultimate goal of this project is to allow 3rd party developers to provide supplementary services for Mountain Project users.
 
 ## Prerequisites
-- Python 3.x
-- A MongoDB database
+- Python 3.7
+- A MySql database
 
 ## Installation
   1. Clone the repository
